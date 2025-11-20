@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrinho - TechHub</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-brand">
+                    <i class="fas fa-microchip"></i>
+                    <span>TechHub</span>
+                </div>
+                
+                <div class="nav-menu">
+                    <a href="index.html" class="nav-link">Início</a>
+                    <a href="produtos.html" class="nav-link">Produtos</a>
+                    <a href="sobre.html" class="nav-link">Sobre</a>
+                    <a href="contato.html" class="nav-link">Contato</a>
+                </div>
+                
+                <div class="nav-actions">
+                    <div class="cart-icon" id="cartIcon">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count" id="cartCount">0</span>
+                    </div>
+                    <div class="mobile-menu-toggle" id="mobileMenuToggle">
+                        <i class="fas fa-bars"></i>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <div class="container">
+            <ul class="breadcrumb-list">
+                <li><a href="index.html">Início</a></li>
+                <li><a href="produtos.html">Produtos</a></li>
+                <li>Carrinho</li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Carrinho de Compras -->
+    <section class="carrinho-section">
+        <div class="container">
+            <h1 class="section-title">Carrinho de Compras</h1>
+            
+            <div class="carrinho-container">
+                <!-- Itens do Carrinho -->
+                <div class="carrinho-items">
+                    <div id="carrinhoVazio" class="empty-state">
+                        <i class="fas fa-shopping-cart"></i>
+                        <h3>Seu carrinho está vazio</h3>
+                        <p>Adicione produtos para começar a comprar</p>
+                        <a href="produtos.html" class="btn-primary">
+                            <i class="fas fa-arrow-left"></i> Continuar Comprando
+                        </a>
+                    </div>
+                    
+                    <div id="carrinhoItems" class="carrinho-items-list">
+                        <!-- Itens do carrinho serão carregados via JavaScript -->
+                    </div>
+                    
+                    <div class="carrinho-actions" id="carrinhoActions" style="display: none;">
+                        <button class="btn-secondary" id="limparCarrinho">
+                            <i class="fas fa-trash"></i> Limpar Carrinho
+                        </button>
+                        <a href="produtos.html" class="btn-secondary" id="continuarComprando">
+                            <i class="fas fa-arrow-left"></i> Continuar Comprando
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Resumo do Pedido -->
+                <div class="carrinho-resumo" id="carrinhoResumo">
+                    <div class="resumo-header">
+                        <h3>Resumo do Pedido</h3>
+                    </div>
+                    
+                    <div class="resumo-itens">
+                        <div class="resumo-item">
+                            <span>Subtotal</span>
+                            <span>R$ 0,00</span>
+                        </div>
+                    </div>
+                    
+                    <div class="resumo-total">
+                        <span>Total</span>
+                        <span>R$ 0,00</span>
+                    </div>
+                    
+                    <div class="resumo-actions">
+                        <button class="btn-primary" id="finalizarCompra" disabled>
+                            <i class="fas fa-credit-card"></i> Finalizar Compra
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Cupom de Desconto -->
+                <div class="cupom-container">
+                    <h4>Cupom de Desconto</h4>
+                    <div class="cupom-input-group">
+                        <input type="text" id="cupomDesconto" placeholder="Digite seu cupom">
+                        <button id="aplicarCupom" class="btn-secondary">
+                            <i class="fas fa-tag"></i> Aplicar
+                        </button>
+                    </div>
+                    <small class="cupom-info">Use TECHHUB10 para 10% OFF</small>
+                </div>
+
+                <!-- Cálculo de Frete -->
+                <div class="frete-container">
+                    <h4>Calcular Frete</h4>
+                    <div class="frete-input-group">
+                        <input type="text" id="cepFrete" placeholder="Digite seu CEP" maxlength="9">
+                        <button id="calcularFrete" class="btn-secondary">
+                            <i class="fas fa-truck"></i> Calcular
+                        </button>
+                    </div>
+                    <div id="freteResultado" class="frete-resultado" style="display: none;">
+                        <!-- Resultado do frete será exibido aqui -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>TechHub</h4>
+                    <p>Sua loja especializada em peças de computador com as melhores marcas e preços do mercado.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Categorias</h4>
+                    <ul>
+                        <li><a href="#">Processadores</a></li>
+                        <li><a href="#">Placas de Vídeo</a></li>
+                        <li><a href="#">Memória RAM</a></li>
+                        <li><a href="#">Armazenamento</a></li>
+                        <li><a href="#">Placas-mãe</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Institucional</h4>
+                    <ul>
+                        <li><a href="#">Sobre Nós</a></li>
+                        <li><a href="#">Política de Privacidade</a></li>
+                        <li><a href="#">Termos de Uso</a></li>
+                        <li><a href="#">Trocas e Devoluções</a></li>
+                        <li><a href="#">Fale Conosco</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Atendimento</h4>
+                    <ul>
+                        <li><i class="fas fa-phone"></i> (11) 9999-9999</li>
+                        <li><i class="fas fa-envelope"></i> contato@techhub.com</li>
+                        <li><i class="fas fa-clock"></i> Seg-Sex: 9h-18h</li>
+                        <li><i class="fas fa-map-marker-alt"></i> São Paulo - SP</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 TechHub. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/app.js"></script>
+    <script src="js/carrinho.js"></script>
+    <script>
+        // Adicionar estilos específicos do carrinho
+        const carrinhoStyles = `
+            <style>
+                /* Estilos específicos do carrinho */
+                .carrinho-section {
+                    padding: 4rem 0;
+                    min-height: 70vh;
+                }
+
+                .carrinho-container {
+                    display: grid;
+                    grid-template-columns: 1fr 400px;
+                    gap: 3rem;
+                    align-items: start;
+                }
+
+                .carrinho-items {
+                    background: var(--dark-card);
+                    border-radius: var(--border-radius);
+                    padding: 2rem;
+                    border: 1px solid var(--dark-border);
+                }
+
+                .carrinho-items-list {
+                    margin-bottom: 2rem;
+                }
+
+                .cart-item {
+                    display: grid;
+                    grid-template-columns: 100px 1fr auto;
+                    gap: 1.5rem;
+                    padding: 1.5rem 0;
+                    border-bottom: 1px solid var(--dark-border);
+                    align-items: center;
+                }
+
+                .cart-item:last-child {
+                    border-bottom: none;
+                }
+
+                .cart-item-imagem {
+                    width: 100px;
+                    height: 100px;
+                    object-fit: cover;
+                    border-radius: var(--border-radius);
+                    border: 1px solid var(--dark-border);
+                }
+
+                .cart-item-info h4 {
+                    font-size: 1.1rem;
+                    margin-bottom: 0.5rem;
+                    color: var(--text-primary);
+                }
+
+                .cart-item-preco {
+                    font-size: 1.2rem;
+                    font-weight: 600;
+                    color: var(--secondary-color);
+                    margin-bottom: 0.5rem;
+                }
+
+                .cart-item-estoque {
+                    font-size: 0.9rem;
+                    color: var(--text-muted);
+                    margin-bottom: 1rem;
+                }
+
+                .cart-item-actions {
+                    display: flex;
+                    align-items: center;
+                    gap: 1rem;
+                }
+
+                .quantidade-control {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                    background: var(--dark-bg);
+                    border-radius: var(--border-radius);
+                    padding: 0.25rem;
+                }
+
+                .btn-quantidade {
+                    background: var(--primary-color);
+                    color: white;
+                    border: none;
+                    width: 30px;
+                    height: 30px;
+                    border-radius: 50%;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-weight: bold;
+                    transition: var(--transition);
+                }
+
+                .btn-quantidade:hover {
+                    background: var(--primary-dark);
+                }
+
+                .quantidade-input {
+                    width: 50px;
+                    text-align: center;
+                    background: transparent;
+                    border: none;
+                    color: var(--text-primary);
+                    font-weight: 600;
+                }
+
+                .btn-remover {
+                    background: var(--danger-color);
+                    color: white;
+                    border: none;
+                    padding: 0.5rem;
+                    border-radius: var(--border-radius);
+                    cursor: pointer;
+                    transition: var(--transition);
+                }
+
+                .btn-remover:hover {
+                    background: #dc2626;
+                }
+
+                .cart-item-subtotal {
+                    text-align: right;
+                    min-width: 120px;
+                }
+
+                .subtotal-label {
+                    display: block;
+                    font-size: 0.9rem;
+                    color: var(--text-muted);
+                    margin-bottom: 0.25rem;
+                }
+
+                .subtotal-valor {
+                    display: block;
+                    font-size: 1.1rem;
+                    font-weight: 600;
+                    color: var(--text-primary);
+                }
+
+                .carrinho-actions {
+                    display: flex;
+                    gap: 1rem;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+
+                .carrinho-resumo {
+                    background: var(--dark-card);
+                    border-radius: var(--border-radius);
+                    padding: 2rem;
+                    border: 1px solid var(--dark-border);
+                    position: sticky;
+                    top: 2rem;
+                }
+
+                .resumo-header {
+                    margin-bottom: 1.5rem;
+                    padding-bottom: 1rem;
+                    border-bottom: 1px solid var(--dark-border);
+                }
+
+                .resumo-header h3 {
+                    font-size: 1.25rem;
+                    color: var(--text-primary);
+                }
+
+                .resumo-itens {
+                    margin-bottom: 1.5rem;
+                }
+
+                .resumo-item {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding: 0.75rem 0;
+                    border-bottom: 1px solid var(--dark-border);
+                }
+
+                .resumo-item:last-child {
+                    border-bottom: none;
+                }
+
+                .resumo-item.desconto {
+                    color: var(--success-color);
+                }
+
+                .resumo-item.frete-prazo {
+                    font-size: 0.9rem;
+                    color: var(--text-muted);
+                }
+
+                .resumo-total {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding: 1rem 0;
+                    border-top: 2px solid var(--primary-color);
+                    font-size: 1.25rem;
+                    font-weight: 700;
+                    color: var(--text-primary);
+                }
+
+                .resumo-actions {
+                    margin-top: 1.5rem;
+                }
+
+                .cupom-container {
+                    background: var(--dark-card);
+                    border-radius: var(--border-radius);
+                    padding: 1.5rem;
+                    border: 1px solid var(--dark-border);
+                    margin-top: 2rem;
+                }
+
+                .cupom-container h4 {
+                    margin-bottom: 1rem;
+                    color: var(--text-primary);
+                }
+
+                .cupom-input-group {
+                    display: flex;
+                    gap: 0.5rem;
+                    margin-bottom: 0.5rem;
+                }
+
+                .cupom-input-group input {
+                    flex: 1;
+                    padding: 0.75rem;
+                    background: var(--dark-bg);
+                    border: 1px solid var(--dark-border);
+                    border-radius: var(--border-radius);
+                    color: var(--text-primary);
+                }
+
+                .cupom-info {
+                    color: var(--text-muted);
+                    font-size: 0.875rem;
+                }
+
+                .frete-container {
+                    background: var(--dark-card);
+                    border-radius: var(--border-radius);
+                    padding: 1.5rem;
+                    border: 1px solid var(--dark-border);
+                    margin-top: 2rem;
+                }
+
+                .frete-container h4 {
+                    margin-bottom: 1rem;
+                    color: var(--text-primary);
+                }
+
+                .frete-input-group {
+                    display: flex;
+                    gap: 0.5rem;
+                    margin-bottom: 1rem;
+                }
+
+                .frete-input-group input {
+                    flex: 1;
+                    padding: 0.75rem;
+                    background: var(--dark-bg);
+                    border: 1px solid var(--dark-border);
+                    border-radius: var(--border-radius);
+                    color: var(--text-primary);
+                }
+
+                .frete-resultado {
+                    background: var(--dark-bg);
+                    border-radius: var(--border-radius);
+                    padding: 1rem;
+                    border: 1px solid var(--dark-border);
+                }
+
+                .frete-opcao {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding: 0.75rem;
+                    border-bottom: 1px solid var(--dark-border);
+                }
+
+                .frete-opcao:last-child {
+                    border-bottom: none;
+                }
+
+                .empty-state {
+                    text-align: center;
+                    padding: 3rem;
+                    color: var(--text-muted);
+                }
+
+                .empty-state i {
+                    font-size: 4rem;
+                    margin-bottom: 1rem;
+                    opacity: 0.5;
+                }
+
+                .empty-state h3 {
+                    margin-bottom: 0.5rem;
+                    color: var(--text-primary);
+                }
+
+                .error-state {
+                    text-align: center;
+                    padding: 3rem;
+                    color: var(--text-muted);
+                }
+
+                .error-state i {
+                    font-size: 4rem;
+                    margin-bottom: 1rem;
+                    color: var(--danger-color);
+                }
+
+                .error-state h3 {
+                    margin-bottom: 0.5rem;
+                    color: var(--text-primary);
+                }
+
+                /* Responsive Design */
+                @media (max-width: 1024px) {
+                    .carrinho-container {
+                        grid-template-columns: 1fr;
+                        gap: 2rem;
+                    }
+
+                    .carrinho-resumo {
+                        position: static;
+                    }
+                }
+
+                @media (max-width: 768px) {
+                    .cart-item {
+                        grid-template-columns: 80px 1fr;
+                        gap: 1rem;
+                    }
+
+                    .cart-item-subtotal {
+                        grid-column: 2;
+                        text-align: left;
+                        margin-top: 1rem;
+                    }
+
+                    .cart-item-actions {
+                        grid-column: 2;
+                        justify-content: flex-start;
+                        margin-top: 1rem;
+                    }
+
+                    .carrinho-actions {
+                        flex-direction: column;
+                        align-items: stretch;
+                    }
+
+                    .cupom-input-group,
+                    .frete-input-group {
+                        flex-direction: column;
+                    }
+
+                    .btn-large {
+                        padding: 1rem 1.5rem;
+                        font-size: 1rem;
+                    }
+                }
+
+                @media (max-width: 480px) {
+                    .carrinho-items {
+                        padding: 1rem;
+                    }
+
+                    .cart-item-imagem {
+                        width: 60px;
+                        height: 60px;
+                    }
+
+                    .quantidade-control {
+                        flex-direction: column;
+                        gap: 0.25rem;
+                    }
+
+                    .quantidade-input {
+                        width: 40px;
+                    }
+                }
+            </style>
+        `;
+        
+        document.head.insertAdjacentHTML('beforeend', carrinhoStyles);
+    </script>
+</body>
+</html>
