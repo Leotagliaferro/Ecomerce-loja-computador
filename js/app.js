@@ -1,7 +1,7 @@
 // Sistema de E-commerce TechHub
 class TechHub {
     constructor() {
-        this.apiBase = '/tables';
+        this.apiBase = 'backend';
         this.carrinho = this.carregarCarrinho();
         this.produtos = [];
         this.categorias = [];
@@ -13,6 +13,69 @@ class TechHub {
         this.carregarCategorias();
         this.carregarProdutos();
         this.atualizarContadorCarrinho();
+        this.checkLoginStatus();
+    }
+
+    checkLoginStatus() {
+        const user = JSON.parse(localStorage.getItem('techhub_user'));
+        const navActions = document.querySelector('.nav-actions');
+
+        if (user && navActions) {
+            // Remove existing login button if any
+            const existingBtn = navActions.querySelector('.login-btn');
+            if (existingBtn) existingBtn.remove();
+
+            // Add user menu
+            const userMenu = document.createElement('div');
+            userMenu.className = 'user-menu';
+            userMenu.innerHTML = `
+                <button class="user-btn" onclick="techHub.toggleUserMenu()">
+                    <i class="fas fa-user-circle"></i>
+                    <span>${user.nome.split(' ')[0]}</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="user-dropdown" id="userDropdown">
+                    <a href="#" class="dropdown-item">
+                        <i class="fas fa-user"></i> Minha Conta
+                    </a>
+                    <a href="#" class="dropdown-item">
+                        <i class="fas fa-box"></i> Meus Pedidos
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item" onclick="techHub.logout()">
+                        <i class="fas fa-sign-out-alt"></i> Sair
+                    </a>
+                </div>
+            `;
+
+            // Insert before cart icon
+            const cartIcon = navActions.querySelector('.cart-icon');
+            navActions.insertBefore(userMenu, cartIcon);
+        } else if (navActions) {
+            // Add login button if not logged in
+            if (!navActions.querySelector('.login-btn') && !navActions.querySelector('.user-menu')) {
+                const loginBtn = document.createElement('a');
+                loginBtn.href = 'login.html';
+                loginBtn.className = 'nav-link login-btn';
+                loginBtn.innerHTML = '<i class="fas fa-user"></i> Entrar';
+                loginBtn.style.marginRight = '1rem';
+
+                const cartIcon = navActions.querySelector('.cart-icon');
+                navActions.insertBefore(loginBtn, cartIcon);
+            }
+        }
+    }
+
+    toggleUserMenu() {
+        const dropdown = document.getElementById('userDropdown');
+        if (dropdown) {
+            dropdown.classList.toggle('active');
+        }
+    }
+
+    logout() {
+        localStorage.removeItem('techhub_user');
+        window.location.reload();
     }
 
     configurarEventListeners() {
@@ -97,14 +160,14 @@ class TechHub {
         if (loading) loading.style.display = 'block';
 
         try {
-            const response = await fetch(`${this.apiBase}/produtos`);
+            const response = await fetch(`${this.apiBase}/listar_produtos.php`);
             const data = await response.json();
             this.produtos = data.data || [];
-            
+
             if (this.produtos.length === 0) {
                 this.produtos = this.getProdutosDefault();
             }
-            
+
             this.renderizarProdutos();
         } catch (error) {
             console.error('Erro ao carregar produtos:', error);
@@ -133,7 +196,7 @@ class TechHub {
     renderizarProdutos(produtos = this.produtos) {
         const container = document.getElementById('produtosGrid');
         const emptyState = document.getElementById('emptyState');
-        
+
         if (!container) return;
 
         if (produtos.length === 0) {
@@ -175,7 +238,7 @@ class TechHub {
         if (!select) return;
 
         select.innerHTML = '<option value="">Todas as Categorias</option>' +
-            this.categorias.map(categoria => 
+            this.categorias.map(categoria =>
                 `<option value="${categoria.nome}">${categoria.nome}</option>`
             ).join('');
     }
@@ -243,7 +306,7 @@ class TechHub {
         }
 
         const itemExistente = this.carrinho.find(item => item.id === produtoId);
-        
+
         if (itemExistente) {
             itemExistente.quantidade += 1;
         } else {
@@ -259,7 +322,7 @@ class TechHub {
         this.salvarCarrinho();
         this.atualizarContadorCarrinho();
         this.mostrarNotificacao(`${produto.nome} adicionado ao carrinho!`);
-        
+
         // Atualizar carrinho flutuante se estiver aberto
         const cartFloat = document.getElementById('cartFloat');
         if (cartFloat.classList.contains('active')) {
@@ -314,7 +377,7 @@ class TechHub {
     atualizarCarrinhoFloat() {
         const container = document.getElementById('cartFloatItems');
         const cartTotal = document.getElementById('cartTotal');
-        
+
         if (!container) return;
 
         if (this.carrinho.length === 0) {
@@ -384,9 +447,9 @@ class TechHub {
             <i class="fas fa-check-circle"></i>
             <span>${mensagem}</span>
         `;
-        
+
         document.body.appendChild(toast);
-        
+
         // Adicionar estilos para o toast
         const style = document.createElement('style');
         style.textContent = `
@@ -410,12 +473,12 @@ class TechHub {
                 font-size: 1.25rem;
             }
         `;
-        
+
         if (!document.querySelector('style[data-toast]')) {
             style.setAttribute('data-toast', 'true');
             document.head.appendChild(style);
         }
-        
+
         // Remover toast após 3 segundos
         setTimeout(() => {
             toast.style.animation = 'fadeOut 0.3s ease-in';
@@ -425,13 +488,13 @@ class TechHub {
 
     assinarNewsletter(form) {
         const email = form.querySelector('input[type="email"]').value;
-        
+
         // Simular envio do email
         const button = form.querySelector('button');
         const originalText = button.textContent;
         button.textContent = 'Enviando...';
         button.disabled = true;
-        
+
         setTimeout(() => {
             this.mostrarNotificacao('Obrigado por assinar nossa newsletter!');
             form.reset();

@@ -16,15 +16,7 @@
                 <div class="nav-brand">
                     <i class="fas fa-microchip"></i>
                     <span>TechHub</span>
-                </div>
-                
-                <div class="nav-menu">
-                    <a href="index.html" class="nav-link">Início</a>
-                    <a href="produtos.html" class="nav-link active">Produtos</a>
-                    <a href="sobre.html" class="nav-link">Sobre</a>
-                    <a href="contato.html" class="nav-link">Contato</a>
-                </div>
-                
+                </div>    
                 <div class="nav-actions">
                     <div class="search-bar">
                         <input type="text" id="searchInput" placeholder="Buscar produtos...">
@@ -41,18 +33,6 @@
             </div>
         </nav>
     </header>
-
-    <!-- Breadcrumb -->
-    <nav class="breadcrumb">
-        <div class="container">
-            <ul class="breadcrumb-list">
-                <li><a href="index.html">Início</a></li>
-                <li><a href="produtos.html">Produtos</a></li>
-                <li id="breadcrumbProduto">Carregando...</li>
-            </ul>
-        </div>
-    </nav>
-
     <!-- Produto Detalhes -->
     <section class="produto-detalhes">
         <div class="container">
@@ -65,17 +45,17 @@
         </div>
     </section>
 
-    <!-- Produtos Relacionados -->
+    
     <section class="produtos-relacionados">
         <div class="container">
             <h2 class="section-title">Produtos Relacionados</h2>
             <div class="produtos-grid" id="produtosRelacionados">
-                <!-- Produtos relacionados serão carregados via JavaScript -->
+                
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
+    
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
@@ -646,7 +626,7 @@
             }
         }
 
-        // Inicializar quando o DOM carregar
+        
         document.addEventListener('DOMContentLoaded', () => {
             window.produtoDetalhe = new ProdutoDetalhe();
         });

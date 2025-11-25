@@ -79,10 +79,26 @@ TechHub/
 
 ## 🚀 Como Usar
 
-### 📦 Instalação
-1. Clone o repositório ou baixe os arquivos
-2. Acesse o arquivo `index.html` no navegador
-3. Para acessar o painel administrativo, abra `admin.html`
+### 📦 Instalação e Configuração
+
+#### 1. Pré-requisitos
+- **XAMPP**: Certifique-se de ter o XAMPP instalado.
+- **Pasta do Projeto**: Este projeto deve estar na pasta `htdocs` do XAMPP (ex: `C:\xampp\htdocs\ecomerce`).
+
+#### 2. Configuração do Banco de Dados
+1. Abra o **XAMPP Control Panel** e inicie os módulos **Apache** e **MySQL**.
+2. Acesse [http://localhost/phpmyadmin](http://localhost/phpmyadmin) no seu navegador.
+3. Crie um novo banco de dados chamado `ecommerce`.
+4. Clique na aba **Importar**, selecione o arquivo `setup.sql` localizado na raiz do projeto e clique em **Executar**.
+   - Isso criará a tabela de usuários necessária para o login.
+
+#### 3. Executando o Projeto
+1. Com o Apache e MySQL rodando, acesse:
+   - **[http://localhost/ecomerce](http://localhost/ecomerce)**
+
+#### 4. Credenciais de Teste
+- **Email**: `teste@techhub.com`
+- **Senha**: `123456`
 
 ### 🌐 Acesso às Páginas
 

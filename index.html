@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
     <!-- Header -->
     <header class="header">
@@ -15,16 +17,16 @@
             <div class="nav-container">
                 <div class="nav-brand">
                     <i class="fas fa-microchip"></i>
-                    <span>TechHub</span>
+                    <span>SEXO</span>
                 </div>
-                
+
                 <div class="nav-menu">
                     <a href="index.html" class="nav-link active">Início</a>
-                    <a href="produtos.html" class="nav-link">Produtos</a>
+                    <a href="#produtos" class="nav-link">Produtos</a>
                     <a href="sobre.html" class="nav-link">Sobre</a>
                     <a href="contato.html" class="nav-link">Contato</a>
                 </div>
-                
+
                 <div class="nav-actions">
                     <div class="search-bar">
                         <input type="text" id="searchInput" placeholder="Buscar produtos...">
@@ -42,7 +44,7 @@
         </nav>
     </header>
 
-    <!-- Hero Section -->
+
     <section class="hero">
         <div class="hero-content">
             <h1 class="hero-title">Monte seu PC dos Sonhos</h1>
@@ -85,17 +87,17 @@
         </div>
     </section>
 
-    <!-- Categorias -->
+
     <section class="categorias">
         <div class="container">
             <h2 class="section-title">Categorias</h2>
             <div class="categorias-grid" id="categoriasGrid">
-                <!-- Categorias serão carregadas via JavaScript -->
+             
             </div>
         </div>
     </section>
 
-    <!-- Produtos em Destaque -->
+  
     <section class="produtos" id="produtos">
         <div class="container">
             <div class="produtos-header">
@@ -112,16 +114,16 @@
                     </select>
                 </div>
             </div>
-            
+
             <div class="produtos-grid" id="produtosGrid">
-                <!-- Produtos serão carregados via JavaScript -->
+           
             </div>
-            
+
             <div class="loading" id="loading" style="display: none;">
                 <i class="fas fa-spinner fa-spin"></i>
                 <span>Carregando produtos...</span>
             </div>
-            
+
             <div class="empty-state" id="emptyState" style="display: none;">
                 <i class="fas fa-box-open"></i>
                 <h3>Nenhum produto encontrado</h3>
@@ -130,7 +132,7 @@
         </div>
     </section>
 
-    <!-- Newsletter -->
+    
     <section class="newsletter">
         <div class="container">
             <div class="newsletter-content">
@@ -144,7 +146,7 @@
         </div>
     </section>
 
-    <!-- Footer -->
+   
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
@@ -158,7 +160,7 @@
                         <a href="#"><i class="fab fa-youtube"></i></a>
                     </div>
                 </div>
-                
+
                 <div class="footer-section">
                     <h4>Categorias</h4>
                     <ul>
@@ -169,7 +171,7 @@
                         <li><a href="#">Placas-mãe</a></li>
                     </ul>
                 </div>
-                
+
                 <div class="footer-section">
                     <h4>Institucional</h4>
                     <ul>
@@ -180,25 +182,25 @@
                         <li><a href="#">Fale Conosco</a></li>
                     </ul>
                 </div>
-                
+
                 <div class="footer-section">
                     <h4>Atendimento</h4>
                     <ul>
-                        <li><i class="fas fa-phone"></i> (11) 9999-9999</li>
+                        <li><i class="fas fa-phone"></i> (67) 67999509894</li>
                         <li><i class="fas fa-envelope"></i> contato@techhub.com</li>
                         <li><i class="fas fa-clock"></i> Seg-Sex: 9h-18h</li>
-                        <li><i class="fas fa-map-marker-alt"></i> São Paulo - SP</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Campo Grande - MS</li>
                     </ul>
                 </div>
             </div>
-            
+
             <div class="footer-bottom">
                 <p>&copy; 2024 TechHub. Todos os direitos reservados.</p>
             </div>
         </div>
     </footer>
 
-    <!-- Carrinho Flutuante -->
+    
     <div class="cart-float" id="cartFloat">
         <div class="cart-float-content">
             <div class="cart-float-header">
@@ -208,7 +210,7 @@
                 </button>
             </div>
             <div class="cart-float-items" id="cartFloatItems">
-                <!-- Itens do carrinho serão carregados aqui -->
+                
             </div>
             <div class="cart-float-footer">
                 <div class="cart-total">
@@ -219,9 +221,10 @@
         </div>
     </div>
 
-    <!-- Scripts -->
+   
     <script src="js/app.js"></script>
     <script src="js/carrinho.js"></script>
     <script src="js/produtos.js"></script>
 </body>
+
 </html>
