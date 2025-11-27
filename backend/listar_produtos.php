@@ -1,3 +1,8 @@
+include 'db.php';
+
+$sql = "SELECT * FROM produtos";
+$result = $conn->query($sql);
+
 $data = [];
 
 if ($result) {

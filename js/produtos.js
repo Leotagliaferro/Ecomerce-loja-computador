@@ -333,7 +333,7 @@ class ProdutosManager {
                 descricao: '24 núcleos, 32 threads, até 5.8GHz. O processador definitivo para jogos e criação.',
                 preco: 3899.90,
                 categoria: 'Processadores',
-                imagem: 'https://m.media-amazon.com/images/I/61S7BrFzQXL._AC_SL1000_.jpg',
+                imagem: 'https://images.unsplash.com/photo-1591799264318-7e6ef8ddbb56?auto=format&fit=crop&q=80&w=800',
                 estoque: 15,
                 marca: 'Intel',
                 modelo: 'i9-13900K'
@@ -344,7 +344,7 @@ class ProdutosManager {
                 descricao: '24GB GDDR6X, Ray Tracing, DLSS 3.0. Desempenho extremo para 4K.',
                 preco: 14999.00,
                 categoria: 'Placas de Vídeo',
-                imagem: 'https://m.media-amazon.com/images/I/81I-Gj1yEBL._AC_SL1500_.jpg',
+                imagem: 'https://images.unsplash.com/photo-1591488320449-011701bb6704?auto=format&fit=crop&q=80&w=800',
                 estoque: 3,
                 marca: 'ASUS',
                 modelo: 'ROG Strix'
@@ -355,7 +355,7 @@ class ProdutosManager {
                 descricao: 'DDR5 6000MHz RGB. Performance e estilo para seu setup.',
                 preco: 1299.90,
                 categoria: 'Memória RAM',
-                imagem: 'https://m.media-amazon.com/images/I/612b1I+KjML._AC_SL1200_.jpg',
+                imagem: 'https://images.unsplash.com/photo-1562976540-1502c2145186?auto=format&fit=crop&q=80&w=800',
                 estoque: 25,
                 marca: 'Corsair',
                 modelo: 'Dominator Platinum'
@@ -366,7 +366,7 @@ class ProdutosManager {
                 descricao: 'Leitura até 7450MB/s. Velocidade insana para carregar tudo instantaneamente.',
                 preco: 1599.00,
                 categoria: 'Armazenamento',
-                imagem: 'https://m.media-amazon.com/images/I/815uX7wkOZS._AC_SL1500_.jpg',
+                imagem: 'https://images.unsplash.com/photo-1628557044797-f21a177c37ec?auto=format&fit=crop&q=80&w=800',
                 estoque: 40,
                 marca: 'Samsung',
                 modelo: '990 PRO'
@@ -377,7 +377,7 @@ class ProdutosManager {
                 descricao: 'Suporte a DDR5, PCIe 5.0, Wi-Fi 6E. A base perfeita para seu PC high-end.',
                 preco: 4599.90,
                 categoria: 'Placas-mãe',
-                imagem: 'https://m.media-amazon.com/images/I/810+f2+tVIL._AC_SL1500_.jpg',
+                imagem: 'https://images.unsplash.com/photo-1555618568-9b196579532d?auto=format&fit=crop&q=80&w=800',
                 estoque: 8,
                 marca: 'Gigabyte',
                 modelo: 'Aorus Master'
@@ -388,7 +388,7 @@ class ProdutosManager {
                 descricao: '16 núcleos, Cache 3D V-Cache. O rei dos jogos.',
                 preco: 4299.00,
                 categoria: 'Processadores',
-                imagem: 'https://m.media-amazon.com/images/I/51f2hk81eGL._AC_SL1000_.jpg',
+                imagem: 'https://images.unsplash.com/photo-1555617778-02518510b9fa?auto=format&fit=crop&q=80&w=800',
                 estoque: 12,
                 marca: 'AMD',
                 modelo: 'Ryzen 9'
@@ -399,7 +399,7 @@ class ProdutosManager {
                 descricao: 'Design modular, vidro temperado, fluxo de ar otimizado.',
                 preco: 1199.90,
                 categoria: 'Gabinetes',
-                imagem: 'https://m.media-amazon.com/images/I/7122h2f-WJL._AC_SL1500_.jpg',
+                imagem: 'https://images.unsplash.com/photo-1587202372775-e229f172b9d7?auto=format&fit=crop&q=80&w=800',
                 estoque: 20,
                 marca: 'Lian Li',
                 modelo: 'O11 Dynamic'
@@ -410,7 +410,7 @@ class ProdutosManager {
                 descricao: '1000W 80 Plus Gold, Full Modular, padrão ATX 3.0.',
                 preco: 1399.90,
                 categoria: 'Fontes',
-                imagem: 'https://m.media-amazon.com/images/I/71c+C2+iHXL._AC_SL1500_.jpg',
+                imagem: 'https://images.unsplash.com/photo-1587202372634-32705e3bf49c?auto=format&fit=crop&q=80&w=800',
                 estoque: 18,
                 marca: 'Corsair',
                 modelo: 'RM1000x'
