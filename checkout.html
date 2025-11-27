@@ -413,25 +413,25 @@
                 <div class="footer-section">
                     <h4>Atendimento</h4>
                     <ul>
-                        <li><i class="fas fa-phone"></i> (11) 9999-9999</li>
+                        <li><i class="fas fa-phone"></i>67 99999-9999</li>
                         <li><i class="fas fa-envelope"></i> contato@techhub.com</li>
                         <li><i class="fas fa-clock"></i> Seg-Sex: 9h-18h</li>
-                        <li><i class="fas fa-map-marker-alt"></i> São Paulo - SP</li>
+                        <li><i class="fas fa-map-marker-alt"></i>Campo Grande - Ms</li>
                     </ul>
                 </div>
             </div>
             
             <div class="footer-bottom">
-                <p>&copy; 2024 TechHub. Todos os direitos reservados.</p>
+                <p>&copy; 2025 TechHub. Todos os direitos reservados.</p>
             </div>
         </div>
     </footer>
 
-    <!-- Scripts -->
+    
     <script src="js/app.js"></script>
     <script src="js/carrinho.js"></script>
     <script>
-        // Sistema de Checkout
+       
         class Checkout {
             constructor() {
                 this.apiBase = '/tables';
@@ -450,31 +450,31 @@
             }
 
             configurarEventListeners() {
-                // Formulário
+                
                 const form = document.getElementById('checkoutForm');
                 if (form) {
                     form.addEventListener('submit', (e) => this.processarPedido(e));
                 }
 
-                // Métodos de pagamento
+                
                 const metodosPagamento = document.querySelectorAll('input[name="pagamento"]');
                 metodosPagamento.forEach(metodo => {
                     metodo.addEventListener('change', (e) => this.alterarMetodoPagamento(e.target.value));
                 });
 
-                // CEP
+                
                 const cep = document.getElementById('cep');
                 if (cep) {
                     cep.addEventListener('blur', () => this.buscarEnderecoPorCep());
                 }
 
-                // Cupom
+                
                 const aplicarCupom = document.getElementById('aplicarCupomCheckout');
                 if (aplicarCupom) {
                     aplicarCupom.addEventListener('click', () => this.aplicarCupom());
                 }
 
-                // Parcelas
+               
                 const parcelas = document.getElementById('parcelas');
                 if (parcelas) {
                     parcelas.addEventListener('change', () => this.atualizarResumo());
@@ -482,7 +482,7 @@
             }
 
             configurarMascaras() {
-                // CPF
+                
                 const cpf = document.getElementById('cpf');
                 if (cpf) {
                     cpf.addEventListener('input', (e) => {
@@ -498,7 +498,7 @@
                     });
                 }
 
-                // CEP
+               
                 const cep = document.getElementById('cep');
                 if (cep) {
                     cep.addEventListener('input', (e) => {
@@ -506,7 +506,7 @@
                     });
                 }
 
-                // Cartão
+               
                 const numeroCartao = document.getElementById('numeroCartao');
                 if (numeroCartao) {
                     numeroCartao.addEventListener('input', (e) => {
@@ -514,7 +514,7 @@
                     });
                 }
 
-                // Validade do cartão
+                
                 const validadeCartao = document.getElementById('validadeCartao');
                 if (validadeCartao) {
                     validadeCartao.addEventListener('input', (e) => {
@@ -563,20 +563,20 @@
                     cartaoDetalhes.style.display = metodo === 'cartao' ? 'block' : 'none';
                 }
 
-                // Atualizar descontos baseado no método
+                
                 let descontoMetodo = 0;
                 switch (metodo) {
                     case 'pix':
-                        descontoMetodo = 0.10; // 10% desconto
+                        descontoMetodo = 0.10; 
                         break;
                     case 'boleto':
-                        descontoMetodo = 0.05; // 5% desconto
+                        descontoMetodo = 0.05; 
                         break;
                     default:
                         descontoMetodo = 0;
                 }
 
-                // Se já houver um cupom aplicado, usar o maior desconto
+                
                 const cupomDesconto = this.cupom ? this.calcularDescontoCupom(this.cupom) : 0;
                 this.desconto = Math.max(descontoMetodo, cupomDesconto);
 
@@ -606,7 +606,7 @@
                 
                 if (descontoCupom > 0) {
                     this.cupom = cupom;
-                    // Se o desconto do cupom for maior que o do método de pagamento, usar o cupom
+                    
                     if (descontoCupom > this.desconto) {
                         this.desconto = descontoCupom;
                     }
@@ -649,7 +649,7 @@
                 document.getElementById('frete').textContent = this.frete > 0 ? `R$ ${this.formatarPreco(this.frete)}` : 'Grátis';
                 document.getElementById('total').textContent = `R$ ${this.formatarPreco(totais.total)}`;
 
-                // Atualizar parcelas
+                
                 const parcelas = document.getElementById('parcelas');
                 if (parcelas) {
                     const valorParcela = totais.total / parseInt(parcelas.value);
@@ -663,7 +663,7 @@
                 
                 if (!cep || cep.length !== 8) return;
 
-                // Simular busca de CEP
+                
                 setTimeout(() => {
                     const enderecos = {
                         '01310100': { logradouro: 'Avenida Paulista', bairro: 'Bela Vista', cidade: 'São Paulo', estado: 'SP' },
@@ -678,7 +678,7 @@
                         document.getElementById('cidade').value = endereco.cidade;
                         document.getElementById('estado').value = endereco.estado;
                         
-                        // Calcular frete baseado no CEP
+                        
                         this.calcularFrete(cep);
                     }
                 }, 1000);
@@ -690,25 +690,25 @@
 
                 switch (regiao) {
                     case '0':
-                    case '1': // São Paulo e regiões próximas
+                    case '1': 
                         freteInfo = { valor: 0, tipo: 'Grátis', prazo: 1 };
                         break;
                     case '2':
-                    case '3': // Rio de Janeiro e regiões próximas
+                    case '3': 
                         freteInfo = { valor: 15.90, tipo: 'Expresso', prazo: 2 };
                         break;
                     case '4':
-                    case '5': // Regiões Norte/Nordeste
+                    case '5': 
                         freteInfo = { valor: 29.90, tipo: 'Standard', prazo: 5 };
                         break;
-                    default: // Outras regiões
+                    default: 
                         freteInfo = { valor: 39.90, tipo: 'Standard', prazo: 7 };
                 }
 
                 this.frete = freteInfo.valor;
                 this.atualizarResumo();
 
-                // Atualizar texto do frete
+                
                 const freteTexto = document.getElementById('freteTexto');
                 if (freteTexto) {
                     freteTexto.textContent = freteInfo.valor === 0 ? 
@@ -733,16 +733,16 @@
                     observacoes: formData.get('observacoes') || ''
                 };
 
-                // Validar dados
+                
                 if (!this.validarDados(pedido)) {
                     return;
                 }
 
-                // Mostrar loading
+               
                 this.mostrarLoading();
 
                 try {
-                    // Salvar pedido no banco de dados
+                    
                     const response = await fetch(`${this.apiBase}/pedidos`, {
                         method: 'POST',
                         headers: {
@@ -757,10 +757,10 @@
 
                     const resultado = await response.json();
                     
-                    // Limpar carrinho
+                    
                     localStorage.removeItem('techhub_carrinho');
                     
-                    // Redirecionar para página de sucesso
+                   
                     window.location.href = `confirmacao.html?id=${resultado.id}`;
 
                 } catch (error) {
@@ -772,21 +772,21 @@
             }
 
             validarDados(pedido) {
-                // Validar CPF
+               
                 const cpf = document.getElementById('cpf').value;
                 if (!this.validarCPF(cpf)) {
                     alert('CPF inválido');
                     return false;
                 }
 
-                // Validar e-mail
+               
                 const email = document.getElementById('email').value;
                 if (!this.validarEmail(email)) {
                     alert('E-mail inválido');
                     return false;
                 }
 
-                // Validar termos
+              
                 const termos = document.getElementById('termos').checked;
                 if (!termos) {
                     alert('Você deve aceitar os termos e condições');
@@ -800,7 +800,7 @@
                 cpf = cpf.replace(/\D/g, '');
                 if (cpf.length !== 11) return false;
                 
-                // Validação básica de CPF (pode ser melhorada)
+               
                 const regex = /^\d{11}$/;
                 return regex.test(cpf);
             }

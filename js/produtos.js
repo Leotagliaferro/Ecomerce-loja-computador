@@ -158,11 +158,11 @@ class ProdutosManager {
     }
 
     getImagemProduto(produto) {
-        // Se for URL completa (http/https), usa ela
+        
         if (produto.imagem && (produto.imagem.startsWith('http') || produto.imagem.startsWith('data:'))) {
             return produto.imagem;
         }
-        // Se não, assume que está em uploads/
+     
         return `uploads/${produto.imagem}`;
     }
 
@@ -366,7 +366,7 @@ class ProdutosManager {
                 descricao: 'Leitura até 7450MB/s. Velocidade insana para carregar tudo instantaneamente.',
                 preco: 1599.00,
                 categoria: 'Armazenamento',
-                imagem: 'https://images.unsplash.com/photo-1628557044797-f21a177c37ec?auto=format&fit=crop&q=80&w=800',
+                imagem: 'https://images.unsplash.com/photo-1562976540-1502c2145186?auto=format&fit=crop&q=80&w=800',
                 estoque: 40,
                 marca: 'Samsung',
                 modelo: '990 PRO'
@@ -414,7 +414,8 @@ class ProdutosManager {
                 estoque: 18,
                 marca: 'Corsair',
                 modelo: 'RM1000x'
-            }
+            },
+            
         ];
     }
 }

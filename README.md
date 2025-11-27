@@ -48,10 +48,8 @@ TechHub/
 ├── produto.html            # Página individual de produto
 ├── carrinho.html           # Página do carrinho de compras
 ├── checkout.html           # Página de checkout/pagamento
-├── admin.html              # Painel administrativo completo
 ├── css/
 │   ├── style.css          # Estilos principais do site
-│   └── admin.css          # Estilos específicos do painel admin
 ├── js/
 │   ├── app.js             # JavaScript principal da loja
 │   ├── carrinho.js        # Sistema de carrinho de compras
@@ -207,66 +205,6 @@ Edite as variáveis CSS em `css/style.css`:
 }
 ```
 
-### Produtos e Categorias
-Os produtos podem ser gerenciados através do painel administrativo ou adicionados diretamente no banco de dados.
 
-### Métodos de Pagamento
-Configure os métodos de pagamento e descontos em `js/carrinho.js`:
-```javascript
-const metodosPagamento = {
-    cartao: { desconto: 0, parcelas: 10 },
-    boleto: { desconto: 0.05, label: '5%' },
-    pix: { desconto: 0.10, label: '10%' }
-};
-```
 
-## 🚨 Manutenção e Suporte
 
-### Atualizações
-- Mantenha os arquivos JavaScript e CSS atualizados
-- Verifique regularmente a disponibilidade de APIs externas
-- Faça backup do banco de dados periodicamente
-
-### Performance
-- Otimize imagens antes de adicionar produtos
-- Limpe o LocalStorage periodicamente
-- Monitore o tamanho do carrinho para evitar overflow
-
-### Segurança
-- Valide todos os dados de entrada
-- Implemente medidas de segurança no backend
-- Use HTTPS para transmissão de dados sensíveis
-
-## 📈 Melhorias Futuras Recomendadas
-
-### Funcionalidades
-- [ ] Sistema de avaliações e comentários
-- [ ] Comparação entre produtos
-- [ ] Histórico de navegação
-- [ ] Recomendações personalizadas
-- [ ] Programa de fidelidade
-- [ ] Integração com redes sociais
-
-### Técnico
-- [ ] Implementação de PWA (Progressive Web App)
-- [ ] Otimização de performance com lazy loading
-- [ ] Implementação de SEO dinâmico
-- [ ] Sistema de cache para melhor performance
-- [ ] Internacionalização completa (i18n)
-
-## 📞 Suporte
-
-Para dúvidas e suporte técnico:
-- **E-mail**: contato@techhub.com
-- **Telefone**: (11) 9999-9999
-- **Horário**: Seg-Sex: 9h-18h
-
-## 📄 Licença
-
-Este projeto é desenvolvido para fins educacionais e comerciais. Todos os direitos reservados à TechHub.
-
----
-
-**Última Atualização**: Janeiro 2024
-**Versão**: 1.0.0
-**Status**: Completo e Operacional 🟢
