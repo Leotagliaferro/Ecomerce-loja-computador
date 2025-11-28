@@ -25,6 +25,9 @@ class TechHub {
             const existingBtn = navActions.querySelector('.login-btn');
             if (existingBtn) existingBtn.remove();
 
+            // Check if user menu already exists to avoid duplication
+            if (navActions.querySelector('.user-menu')) return;
+
             // Add user menu
             const userMenu = document.createElement('div');
             userMenu.className = 'user-menu';
@@ -41,6 +44,11 @@ class TechHub {
                     <a href="#" class="dropdown-item">
                         <i class="fas fa-box"></i> Meus Pedidos
                     </a>
+                    ${user.email === 'admin@techhub.com' ? `
+                    <a href="admin.html" class="dropdown-item">
+                        <i class="fas fa-cog"></i> Painel Admin
+                    </a>
+                    ` : ''}
                     <div class="dropdown-divider"></div>
                     <a href="#" class="dropdown-item" onclick="techHub.logout()">
                         <i class="fas fa-sign-out-alt"></i> Sair
@@ -116,39 +124,25 @@ class TechHub {
             });
         }
 
-        // Filtros
-        const searchInput = document.getElementById('searchInput');
-        const categoriaFilter = document.getElementById('categoriaFilter');
-        const ordenarSelect = document.getElementById('ordenarSelect');
-
-        if (searchInput) {
-            searchInput.addEventListener('input', () => {
-                this.filtrarProdutos();
-            });
-        }
-
-        if (categoriaFilter) {
-            categoriaFilter.addEventListener('change', () => {
-                this.filtrarProdutos();
-            });
-        }
-
-        if (ordenarSelect) {
-            ordenarSelect.addEventListener('change', () => {
-                this.ordenarProdutos();
-            });
-        }
+        // Close user dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            const userMenu = document.querySelector('.user-menu');
+            const dropdown = document.getElementById('userDropdown');
+            if (userMenu && dropdown && !userMenu.contains(e.target)) {
+                dropdown.classList.remove('active');
+            }
+        });
     }
 
     async carregarCategorias() {
         try {
-            const response = await fetch(`${this.apiBase}/categorias`);
+            const response = await fetch(`${this.apiBase}/listar_categorias.php`);
             const data = await response.json();
-            this.categorias = data.data || [];
+            this.categorias = (data.data && !data.erro) ? data.data : this.getCategoriasDefault();
             this.renderizarCategorias();
             this.preencherFiltroCategorias();
         } catch (error) {
-            console.error('Erro ao carregar categorias:', error);
+            console.warn('Usando categorias padrão devido a erro:', error);
             this.categorias = this.getCategoriasDefault();
             this.renderizarCategorias();
             this.preencherFiltroCategorias();
@@ -156,26 +150,41 @@ class TechHub {
     }
 
     async carregarProdutos() {
-        const loading = document.getElementById('loading');
-        if (loading) loading.style.display = 'block';
-
+        // This method is mainly for the homepage/app-wide data
+        // Specific pages might load their own products (like produtos.js)
+        // But we keep a reference here
         try {
             const response = await fetch(`${this.apiBase}/listar_produtos.php`);
             const data = await response.json();
-            this.produtos = data.data || [];
+            let produtosBackend = (data.data && !data.erro) ? data.data : [];
 
-            if (this.produtos.length === 0) {
-                this.produtos = this.getProdutosDefault();
+            // Merge with custom products from localStorage (Admin Panel)
+            const produtosCustom = this.getProdutosCustomizados();
+
+            // If backend is empty/failed, use defaults
+            if (produtosBackend.length === 0) {
+                produtosBackend = this.getProdutosDefault();
             }
 
-            this.renderizarProdutos();
+            this.produtos = [...produtosCustom, ...produtosBackend];
+
+            // Only render if we are on a page with the grid
+            if (document.getElementById('produtosGrid')) {
+                // Let produtos.js handle rendering if it exists, otherwise do it here
+                // But usually produtos.js handles the main grid. 
+                // We'll leave this empty to avoid conflict, or check if produtosManager exists
+                if (!window.produtosManager) {
+                    this.renderizarProdutos();
+                }
+            }
         } catch (error) {
             console.error('Erro ao carregar produtos:', error);
-            this.produtos = this.getProdutosDefault();
-            this.renderizarProdutos();
-        } finally {
-            if (loading) loading.style.display = 'none';
+            this.produtos = [...this.getProdutosCustomizados(), ...this.getProdutosDefault()];
         }
+    }
+
+    getProdutosCustomizados() {
+        return JSON.parse(localStorage.getItem('techhub_custom_products') || '[]');
     }
 
     renderizarCategorias() {
@@ -188,54 +197,27 @@ class TechHub {
                     <i class="${this.getIconeCategoria(categoria.nome)}"></i>
                 </div>
                 <h3 class="categoria-nome">${categoria.nome}</h3>
-                <p class="categoria-desc">${categoria.descricao}</p>
+                <p class="categoria-desc">${categoria.descricao || 'Explore nossa seleção'}</p>
             </div>
         `).join('');
     }
 
     renderizarProdutos(produtos = this.produtos) {
+        // Simple renderer for index.html 'Featured' section if needed
+        // Usually produtos.js handles the main catalog
         const container = document.getElementById('produtosGrid');
-        const emptyState = document.getElementById('emptyState');
-
         if (!container) return;
 
-        if (produtos.length === 0) {
-            container.innerHTML = '';
-            if (emptyState) emptyState.style.display = 'block';
-            return;
-        }
-
-        if (emptyState) emptyState.style.display = 'none';
-
-        container.innerHTML = produtos.map(produto => `
-            <div class="produto-card fade-in">
-                <div class="produto-badge">${this.getBadgeProduto(produto)}</div>
-                <img src="${produto.imagem}" alt="${produto.nome}" class="produto-imagem" 
-                     onerror="this.src='https://via.placeholder.com/300x200?text=Produto'">
-                <div class="produto-info">
-                    <span class="produto-categoria">${produto.categoria}</span>
-                    <h3 class="produto-nome">${produto.nome}</h3>
-                    <p class="produto-desc">${produto.descricao}</p>
-                    <div class="produto-preco">
-                        R$ ${this.formatarPreco(produto.preco)}
-                        <span class="parcela">ou 10x de R$ ${this.formatarPreco(produto.preco / 10)}</span>
-                    </div>
-                    <div class="produto-actions">
-                        <a href="produto.html?id=${produto.id}" class="btn-secondary">
-                            <i class="fas fa-eye"></i>
-                        </a>
-                        <button class="btn-primary" onclick="techHub.adicionarAoCarrinho('${produto.id}')">
-                            <i class="fas fa-cart-plus"></i> Comprar
-                        </button>
-                    </div>
-                </div>
-            </div>
-        `).join('');
+        // Implementation similar to produtos.js but simplified
+        // ... (Logic delegated to produtos.js for now to avoid duplication)
     }
 
     preencherFiltroCategorias() {
         const select = document.getElementById('categoriaFilter');
         if (!select) return;
+
+        // Check if options already exist to avoid duplicates
+        if (select.options.length > 1) return;
 
         select.innerHTML = '<option value="">Todas as Categorias</option>' +
             this.categorias.map(categoria =>
@@ -243,69 +225,36 @@ class TechHub {
             ).join('');
     }
 
-    filtrarProdutos() {
-        const busca = document.getElementById('searchInput')?.value.toLowerCase() || '';
-        const categoria = document.getElementById('categoriaFilter')?.value || '';
-
-        let produtosFiltrados = this.produtos;
-
-        if (busca) {
-            produtosFiltrados = produtosFiltrados.filter(produto =>
-                produto.nome.toLowerCase().includes(busca) ||
-                produto.descricao.toLowerCase().includes(busca) ||
-                produto.categoria.toLowerCase().includes(busca)
-            );
-        }
-
-        if (categoria) {
-            produtosFiltrados = produtosFiltrados.filter(produto =>
-                produto.categoria === categoria
-            );
-        }
-
-        this.renderizarProdutos(produtosFiltrados);
-    }
-
-    ordenarProdutos() {
-        const ordenar = document.getElementById('ordenarSelect')?.value || 'nome';
-        let produtosOrdenados = [...this.produtos];
-
-        switch (ordenar) {
-            case 'preco_menor':
-                produtosOrdenados.sort((a, b) => a.preco - b.preco);
-                break;
-            case 'preco_maior':
-                produtosOrdenados.sort((a, b) => b.preco - a.preco);
-                break;
-            case 'nome':
-                produtosOrdenados.sort((a, b) => a.nome.localeCompare(b.nome));
-                break;
-            case 'mais_vendidos':
-                // Implementar lógica de mais vendidos
-                produtosOrdenados.sort((a, b) => (b.vendas || 0) - (a.vendas || 0));
-                break;
-        }
-
-        this.renderizarProdutos(produtosOrdenados);
-    }
-
     filtrarPorCategoria(categoria) {
-        const select = document.getElementById('categoriaFilter');
-        if (select) {
-            select.value = categoria;
-            this.filtrarProdutos();
-        }
+        // Redirect to products page with filter
+        window.location.href = `index.html#produtos`;
+        // Small delay to allow scroll then filter
+        setTimeout(() => {
+            const select = document.getElementById('categoriaFilter');
+            if (select) {
+                select.value = categoria;
+                select.dispatchEvent(new Event('change'));
+            }
+        }, 500);
     }
 
-    // Sistema de Carrinho
+    // Sistema de Carrinho Centralizado
     adicionarAoCarrinho(produtoId) {
-        const produto = this.produtos.find(p => p.id === produtoId);
+        // Find product in loaded list or defaults
+        let produto = this.produtos.find(p => p.id == produtoId);
+
+        // If not found in current list, check defaults/customs explicitly
         if (!produto) {
-            alert('Produto não encontrado!');
+            const allProducts = [...this.getProdutosCustomizados(), ...this.getProdutosDefault()];
+            produto = allProducts.find(p => p.id == produtoId);
+        }
+
+        if (!produto) {
+            this.mostrarNotificacao('Produto não encontrado!', 'error');
             return;
         }
 
-        const itemExistente = this.carrinho.find(item => item.id === produtoId);
+        const itemExistente = this.carrinho.find(item => item.id == produtoId);
 
         if (itemExistente) {
             itemExistente.quantidade += 1;
@@ -313,7 +262,7 @@ class TechHub {
             this.carrinho.push({
                 id: produto.id,
                 nome: produto.nome,
-                preco: produto.preco,
+                preco: parseFloat(produto.preco),
                 imagem: produto.imagem,
                 quantidade: 1
             });
@@ -325,20 +274,20 @@ class TechHub {
 
         // Atualizar carrinho flutuante se estiver aberto
         const cartFloat = document.getElementById('cartFloat');
-        if (cartFloat.classList.contains('active')) {
+        if (cartFloat && cartFloat.classList.contains('active')) {
             this.atualizarCarrinhoFloat();
         }
     }
 
     removerDoCarrinho(produtoId) {
-        this.carrinho = this.carrinho.filter(item => item.id !== produtoId);
+        this.carrinho = this.carrinho.filter(item => item.id != produtoId);
         this.salvarCarrinho();
         this.atualizarContadorCarrinho();
         this.atualizarCarrinhoFloat();
     }
 
     atualizarQuantidade(produtoId, quantidade) {
-        const item = this.carrinho.find(item => item.id === produtoId);
+        const item = this.carrinho.find(item => item.id == produtoId);
         if (item) {
             if (quantidade <= 0) {
                 this.removerDoCarrinho(produtoId);
@@ -346,6 +295,7 @@ class TechHub {
                 item.quantidade = quantidade;
                 this.salvarCarrinho();
                 this.atualizarContadorCarrinho();
+                this.atualizarCarrinhoFloat();
             }
         }
     }
@@ -393,7 +343,7 @@ class TechHub {
 
         container.innerHTML = this.carrinho.map(item => `
             <div class="cart-item">
-                <img src="${item.imagem}" alt="${item.nome}" class="cart-item-imagem">
+                <img src="${item.imagem}" alt="${item.nome}" class="cart-item-imagem" onerror="this.src='https://via.placeholder.com/80x80?text=Item'">
                 <div class="cart-item-info">
                     <div class="cart-item-nome">${item.nome}</div>
                     <div class="cart-item-preco">R$ ${this.formatarPreco(item.preco)}</div>
@@ -403,6 +353,9 @@ class TechHub {
                         <button onclick="techHub.atualizarQuantidade('${item.id}', ${item.quantidade + 1})">+</button>
                     </div>
                 </div>
+                <button class="remove-item" onclick="techHub.removerDoCarrinho('${item.id}')">
+                    <i class="fas fa-trash"></i>
+                </button>
             </div>
         `).join('');
 
@@ -427,90 +380,79 @@ class TechHub {
             'Placas-mãe': 'fas fa-circuit-board',
             'Fontes': 'fas fa-plug',
             'Gabinetes': 'fas fa-server',
-            'Coolers': 'fas fa-fan'
+            'Coolers': 'fas fa-fan',
+            'Periféricos': 'fas fa-keyboard'
         };
-        return icones[categoria] || 'fas fa-microchip';
+        return icones[categoria] || 'fas fa-box';
     }
 
     getBadgeProduto(produto) {
-        // Lógica para determinar o badge do produto
         if (produto.estoque <= 5) return 'Últimas!';
-        if (produto.preco > 2000) return 'Premium';
-        return 'Novo';
+        if (produto.preco > 3000) return 'Premium';
+        if (produto.novo) return 'Novo';
+        return 'Oferta';
     }
 
-    mostrarNotificacao(mensagem) {
-        // Criar notificação toast
+    mostrarNotificacao(mensagem, tipo = 'success') {
         const toast = document.createElement('div');
-        toast.className = 'toast';
+        toast.className = `toast ${tipo}`;
         toast.innerHTML = `
-            <i class="fas fa-check-circle"></i>
+            <i class="fas ${tipo === 'success' ? 'fa-check-circle' : 'fa-info-circle'}"></i>
             <span>${mensagem}</span>
         `;
 
         document.body.appendChild(toast);
 
-        // Adicionar estilos para o toast
-        const style = document.createElement('style');
-        style.textContent = `
-            .toast {
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                background: var(--success-color);
-                color: white;
-                padding: 1rem 1.5rem;
-                border-radius: var(--border-radius);
-                display: flex;
-                align-items: center;
-                gap: 0.5rem;
-                z-index: 3000;
-                animation: slideInRight 0.3s ease-out;
-                box-shadow: var(--shadow-lg);
-            }
-            
-            .toast i {
-                font-size: 1.25rem;
-            }
-        `;
-
+        // Ensure styles exist
         if (!document.querySelector('style[data-toast]')) {
+            const style = document.createElement('style');
+            style.textContent = `
+                .toast {
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background: var(--success-color, #22c55e);
+                    color: white;
+                    padding: 1rem 1.5rem;
+                    border-radius: 12px;
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                    z-index: 3000;
+                    animation: slideInRight 0.3s ease-out;
+                    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+                }
+                .toast.error { background: var(--danger-color, #ef4444); }
+                .toast.info { background: var(--primary-color, #2563eb); }
+                @keyframes slideInRight {
+                    from { transform: translateX(100%); }
+                    to { transform: translateX(0); }
+                }
+                @keyframes fadeOut {
+                    from { opacity: 1; }
+                    to { opacity: 0; }
+                }
+            `;
             style.setAttribute('data-toast', 'true');
             document.head.appendChild(style);
         }
 
-        // Remover toast após 3 segundos
         setTimeout(() => {
             toast.style.animation = 'fadeOut 0.3s ease-in';
             setTimeout(() => toast.remove(), 300);
         }, 3000);
     }
 
-    assinarNewsletter(form) {
-        const email = form.querySelector('input[type="email"]').value;
-
-        // Simular envio do email
-        const button = form.querySelector('button');
-        const originalText = button.textContent;
-        button.textContent = 'Enviando...';
-        button.disabled = true;
-
-        setTimeout(() => {
-            this.mostrarNotificacao('Obrigado por assinar nossa newsletter!');
-            form.reset();
-            button.textContent = originalText;
-            button.disabled = false;
-        }, 1500);
-    }
-
-    // Dados padrão caso a API não esteja disponível
+    // Dados padrão
     getCategoriasDefault() {
         return [
-            { id: '1', nome: 'Processadores', descricao: 'CPUs de alta performance', imagem: '' },
-            { id: '2', nome: 'Placas de Vídeo', descricao: 'GPUs para gaming e trabalho', imagem: '' },
-            { id: '3', nome: 'Memória RAM', descricao: 'Memórias DDR4 e DDR5', imagem: '' },
-            { id: '4', nome: 'Armazenamento', descricao: 'SSDs e HDs', imagem: '' },
-            { id: '5', nome: 'Placas-mãe', descricao: 'Motherboards', imagem: '' }
+            { id: '1', nome: 'Processadores', descricao: 'CPUs de alta performance' },
+            { id: '2', nome: 'Placas de Vídeo', descricao: 'GPUs para gaming e trabalho' },
+            { id: '3', nome: 'Memória RAM', descricao: 'Memórias DDR4 e DDR5' },
+            { id: '4', nome: 'Armazenamento', descricao: 'SSDs e HDs' },
+            { id: '5', nome: 'Placas-mãe', descricao: 'Motherboards' },
+            { id: '6', nome: 'Gabinetes', descricao: 'Cases e Torres' },
+            { id: '7', nome: 'Fontes', descricao: 'PSUs' }
         ];
     }
 
@@ -522,9 +464,8 @@ class TechHub {
                 descricao: 'Processador de 24 núcleos para máxima performance',
                 preco: 3499.99,
                 categoria: 'Processadores',
-                imagem: 'https://via.placeholder.com/300x200?text=Intel+i9',
+                imagem: 'https://images.unsplash.com/photo-1591799264318-7e6ef8ddbb56?auto=format&fit=crop&q=80&w=800',
                 estoque: 15,
-                especificacoes: '24 núcleos, 32 threads, 5.8GHz',
                 marca: 'Intel',
                 modelo: 'i9-13900K'
             },
@@ -534,9 +475,8 @@ class TechHub {
                 descricao: 'Placa de vídeo de última geração para 4K gaming',
                 preco: 8999.99,
                 categoria: 'Placas de Vídeo',
-                imagem: 'https://via.placeholder.com/300x200?text=RTX+4080',
+                imagem: 'https://images.unsplash.com/photo-1591488320449-011701bb6704?auto=format&fit=crop&q=80&w=800',
                 estoque: 8,
-                especificacoes: '16GB GDDR6X, Ray Tracing, DLSS 3',
                 marca: 'NVIDIA',
                 modelo: 'RTX 4080'
             },
@@ -546,9 +486,8 @@ class TechHub {
                 descricao: 'Kit memória DDR5 5600MHz RGB',
                 preco: 1299.99,
                 categoria: 'Memória RAM',
-                imagem: 'https://via.placeholder.com/300x200?text=Corsair+RAM',
+                imagem: 'https://images.unsplash.com/photo-1562976540-1502c2145186?auto=format&fit=crop&q=80&w=800',
                 estoque: 25,
-                especificacoes: '32GB (2x16GB), DDR5, 5600MHz, RGB',
                 marca: 'Corsair',
                 modelo: 'Vengeance RGB'
             },
@@ -558,9 +497,8 @@ class TechHub {
                 descricao: 'SSD NVMe PCIe 4.0 ultra rápido',
                 preco: 799.99,
                 categoria: 'Armazenamento',
-                imagem: 'https://via.placeholder.com/300x200?text=Samsung+980+PRO',
+                imagem: 'https://images.unsplash.com/photo-1628557044797-f21a17b96c89?auto=format&fit=crop&q=80&w=800',
                 estoque: 30,
-                especificacoes: '1TB, NVMe, PCIe 4.0, 7000MB/s',
                 marca: 'Samsung',
                 modelo: '980 PRO'
             },
@@ -570,9 +508,8 @@ class TechHub {
                 descricao: 'Placa-mãe premium para Intel 13ª geração',
                 preco: 2499.99,
                 categoria: 'Placas-mãe',
-                imagem: 'https://via.placeholder.com/300x200?text=ASUS+ROG',
+                imagem: 'https://images.unsplash.com/photo-1555618568-9b196579532d?auto=format&fit=crop&q=80&w=800',
                 estoque: 12,
-                especificacoes: 'Socket LGA1700, DDR5, WiFi 6E',
                 marca: 'ASUS',
                 modelo: 'ROG Strix Z790-E'
             },
@@ -582,9 +519,8 @@ class TechHub {
                 descricao: 'Processador de 16 núcleos para creators',
                 preco: 3299.99,
                 categoria: 'Processadores',
-                imagem: 'https://via.placeholder.com/300x200?text=Ryzen+9',
+                imagem: 'https://images.unsplash.com/photo-1555617778-02518510b9fa?auto=format&fit=crop&q=80&w=800',
                 estoque: 10,
-                especificacoes: '16 núcleos, 32 threads, 5.7GHz',
                 marca: 'AMD',
                 modelo: 'Ryzen 9 7950X'
             }

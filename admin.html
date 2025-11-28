@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Admin - TechHub</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .admin-container {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .admin-grid {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 2rem;
+        }
+
+        .admin-form-card {
+            background: var(--dark-card);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--dark-border);
+            height: fit-content;
+        }
+
+        .admin-table-card {
+            background: var(--dark-card);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--dark-border);
+            overflow-x: auto;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            background: var(--dark-bg);
+            border: 1px solid var(--dark-border);
+            border-radius: 8px;
+            color: var(--text-primary);
+        }
+
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .admin-table th,
+        .admin-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--dark-border);
+        }
+
+        .admin-table th {
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        .action-btn {
+            background: none;
+            border: none;
+            color: var(--danger-color);
+            cursor: pointer;
+            font-size: 1.1rem;
+        }
+
+        .preview-image {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        @media (max-width: 900px) {
+            .admin-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <a href="index.html" class="nav-brand">
+                    <i class="fas fa-microchip"></i>
+                    <span>TechHub Admin</span>
+                </a>
+                <div class="nav-actions">
+                    <a href="index.html" class="nav-link">Voltar para Loja</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="admin-container">
+        <div class="admin-header">
+            <h1>Gerenciar Produtos</h1>
+            <p class="text-secondary">Adicione ou remova produtos da loja</p>
+        </div>
+
+        <div class="admin-grid">
+            <!-- Form -->
+            <div class="admin-form-card">
+                <h3>Novo Produto</h3>
+                <form id="produtoForm">
+                    <div class="form-group">
+                        <label>Nome do Produto</label>
+                        <input type="text" id="nome" required placeholder="Ex: RTX 4090">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Preço (R$)</label>
+                        <input type="number" id="preco" step="0.01" required placeholder="0.00">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Categoria</label>
+                        <select id="categoria" required>
+                            <option value="Processadores">Processadores</option>
+                            <option value="Placas de Vídeo">Placas de Vídeo</option>
+                            <option value="Memória RAM">Memória RAM</option>
+                            <option value="Armazenamento">Armazenamento</option>
+                            <option value="Placas-mãe">Placas-mãe</option>
+                            <option value="Gabinetes">Gabinetes</option>
+                            <option value="Fontes">Fontes</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>URL da Imagem</label>
+                        <input type="url" id="imagem" required placeholder="https://...">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Estoque</label>
+                        <input type="number" id="estoque" required value="10">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Descrição</label>
+                        <textarea id="descricao" rows="3" required placeholder="Detalhes do produto..."></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-primary" style="width: 100%">
+                        <i class="fas fa-plus"></i> Adicionar Produto
+                    </button>
+                </form>
+            </div>
+
+            <!-- List -->
+            <div class="admin-table-card">
+                <h3>Produtos Cadastrados</h3>
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Img</th>
+                            <th>Nome</th>
+                            <th>Preço</th>
+                            <th>Estoque</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="produtosTableBody">
+                        <!-- Filled by JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+
+</html>

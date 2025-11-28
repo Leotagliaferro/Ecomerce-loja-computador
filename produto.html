@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,15 +9,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
     <!-- Header -->
     <header class="header">
         <nav class="navbar">
             <div class="nav-container">
-                <div class="nav-brand">
+                <a href="index.html" class="nav-brand">
                     <i class="fas fa-microchip"></i>
                     <span>TechHub</span>
-                </div>    
+                </a>
                 <div class="nav-actions">
                     <div class="search-bar">
                         <input type="text" id="searchInput" placeholder="Buscar produtos...">
@@ -33,11 +35,21 @@
             </div>
         </nav>
     </header>
+
+    <!-- Breadcrumb -->
+    <div class="container">
+        <div class="breadcrumb">
+            <a href="index.html">Início</a>
+            <i class="fas fa-chevron-right"></i>
+            <span id="breadcrumbProduto">Carregando...</span>
+        </div>
+    </div>
+
     <!-- Produto Detalhes -->
     <section class="produto-detalhes">
         <div class="container">
             <div class="produto-container" id="produtoContainer">
-                <div class="loading">
+                <div class="loading" id="loading">
                     <i class="fas fa-spinner fa-spin"></i>
                     <span>Carregando produto...</span>
                 </div>
@@ -45,17 +57,17 @@
         </div>
     </section>
 
-    
+    <!-- Produtos Relacionados -->
     <section class="produtos-relacionados">
         <div class="container">
             <h2 class="section-title">Produtos Relacionados</h2>
             <div class="produtos-grid" id="produtosRelacionados">
-                
+                <!-- Loaded by JS -->
             </div>
         </div>
     </section>
 
-    
+    <!-- Footer -->
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
@@ -69,40 +81,37 @@
                         <a href="#"><i class="fab fa-youtube"></i></a>
                     </div>
                 </div>
-                
+
                 <div class="footer-section">
                     <h4>Categorias</h4>
                     <ul>
-                        <li><a href="#">Processadores</a></li>
-                        <li><a href="#">Placas de Vídeo</a></li>
-                        <li><a href="#">Memória RAM</a></li>
-                        <li><a href="#">Armazenamento</a></li>
-                        <li><a href="#">Placas-mãe</a></li>
+                        <li><a href="index.html#produtos">Processadores</a></li>
+                        <li><a href="index.html#produtos">Placas de Vídeo</a></li>
+                        <li><a href="index.html#produtos">Memória RAM</a></li>
+                        <li><a href="index.html#produtos">Armazenamento</a></li>
                     </ul>
                 </div>
-                
+
                 <div class="footer-section">
                     <h4>Institucional</h4>
                     <ul>
                         <li><a href="#">Sobre Nós</a></li>
                         <li><a href="#">Política de Privacidade</a></li>
                         <li><a href="#">Termos de Uso</a></li>
-                        <li><a href="#">Trocas e Devoluções</a></li>
                         <li><a href="#">Fale Conosco</a></li>
                     </ul>
                 </div>
-                
+
                 <div class="footer-section">
                     <h4>Atendimento</h4>
                     <ul>
                         <li><i class="fas fa-phone"></i> (11) 9999-9999</li>
                         <li><i class="fas fa-envelope"></i> contato@techhub.com</li>
                         <li><i class="fas fa-clock"></i> Seg-Sex: 9h-18h</li>
-                        <li><i class="fas fa-map-marker-alt"></i> São Paulo - SP</li>
                     </ul>
                 </div>
             </div>
-            
+
             <div class="footer-bottom">
                 <p>&copy; 2024 TechHub. Todos os direitos reservados.</p>
             </div>
@@ -132,504 +141,7 @@
 
     <!-- Scripts -->
     <script src="js/app.js"></script>
-    <script src="js/carrinho.js"></script>
-    <script>
-        // Sistema de Produto Detalhado
-        class ProdutoDetalhe {
-            constructor() {
-                this.apiBase = '/tables';
-                this.produto = null;
-                this.produtosRelacionados = [];
-                this.init();
-            }
-
-            init() {
-                this.carregarProduto();
-                this.configurarEventListeners();
-            }
-
-            configurarEventListeners() {
-                // Carrinho flutuante
-                const cartIcon = document.getElementById('cartIcon');
-                const cartFloat = document.getElementById('cartFloat');
-                const closeCart = document.getElementById('closeCart');
-
-                if (cartIcon) {
-                    cartIcon.addEventListener('click', () => {
-                        cartFloat.classList.add('active');
-                        this.atualizarCarrinhoFloat();
-                    });
-                }
-
-                if (closeCart) {
-                    closeCart.addEventListener('click', () => {
-                        cartFloat.classList.remove('active');
-                    });
-                }
-            }
-
-            async carregarProduto() {
-                const urlParams = new URLSearchParams(window.location.search);
-                const produtoId = urlParams.get('id');
-
-                if (!produtoId) {
-                    this.mostrarErro('Produto não encontrado');
-                    return;
-                }
-
-                try {
-                    const response = await fetch(`${this.apiBase}/produtos/${produtoId}`);
-                    if (!response.ok) {
-                        throw new Error('Produto não encontrado');
-                    }
-                    
-                    this.produto = await response.json();
-                    this.renderizarProduto();
-                    this.carregarProdutosRelacionados();
-                } catch (error) {
-                    console.error('Erro ao carregar produto:', error);
-                    // Tentar carregar de produtos padrão
-                    this.produto = this.buscarProdutoPadrao(produtoId);
-                    if (this.produto) {
-                        this.renderizarProduto();
-                        this.carregarProdutosRelacionados();
-                    } else {
-                        this.mostrarErro('Produto não encontrado');
-                    }
-                }
-            }
-
-            async carregarProdutosRelacionados() {
-                if (!this.produto) return;
-
-                try {
-                    const response = await fetch(`${this.apiBase}/produtos`);
-                    const data = await response.json();
-                    const todosProdutos = data.data || [];
-                    
-                    // Filtrar produtos da mesma categoria, exceto o atual
-                    this.produtosRelacionados = todosProdutos.filter(p => 
-                        p.categoria === this.produto.categoria && p.id !== this.produto.id
-                    ).slice(0, 4); // Pegar apenas 4 produtos
-                    
-                    this.renderizarProdutosRelacionados();
-                } catch (error) {
-                    console.error('Erro ao carregar produtos relacionados:', error);
-                    // Usar produtos padrão
-                    this.produtosRelacionados = this.getProdutosRelacionadosPadrao();
-                    this.renderizarProdutosRelacionados();
-                }
-            }
-
-            renderizarProduto() {
-                if (!this.produto) return;
-
-                const container = document.getElementById('produtoContainer');
-                const breadcrumb = document.getElementById('breadcrumbProduto');
-                
-                // Atualizar breadcrumb
-                if (breadcrumb) breadcrumb.textContent = this.produto.nome;
-
-                container.innerHTML = `
-                    <div class="produto-detalhe-grid">
-                        <!-- Imagens do Produto -->
-                        <div class="produto-imagens">
-                            <div class="imagem-principal">
-                                <img src="${this.produto.imagem}" alt="${this.produto.nome}" 
-                                     onerror="this.src='https://via.placeholder.com/500x500?text=Produto'">
-                            </div>
-                            <div class="imagens-thumbs" id="thumbsContainer">
-                                <!-- Thumbnails serão adicionadas aqui -->
-                            </div>
-                        </div>
-
-                        <!-- Informações do Produto -->
-                        <div class="produto-info">
-                            <div class="produto-header">
-                                <span class="produto-categoria">${this.produto.categoria}</span>
-                                <span class="produto-badge ${this.getBadgeClass()}">${this.getBadgeText()}</span>
-                            </div>
-
-                            <h1 class="produto-titulo">${this.produto.nome}</h1>
-                            <p class="produto-subtitulo">${this.produto.marca} • ${this.produto.modelo}</p>
-                            
-                            <div class="produto-avaliacao">
-                                <div class="estrelas">
-                                    ${this.gerarEstrelas(4.5)}
-                                </div>
-                                <span class="avaliacao-texto">4.5 (128 avaliações)</span>
-                            </div>
-
-                            <div class="produto-preco-container">
-                                <div class="produto-preco-principal">
-                                    <span class="preco-atual">R$ ${this.formatarPreco(this.produto.preco)}</span>
-                                    <span class="parcelamento">ou 10x de R$ ${this.formatarPreco(this.produto.preco / 10)} sem juros</span>
-                                </div>
-                                <div class="produto-economia">
-                                    <i class="fas fa-tag"></i>
-                                    <span>Economize R$ ${this.formatarPreco(this.produto.preco * 0.1)}</span>
-                                </div>
-                            </div>
-
-                            <div class="produto-estoque">
-                                <i class="fas fa-box"></i>
-                                <span>${this.produto.estoque} unidades disponíveis</span>
-                            </div>
-
-                            <div class="produto-descricao">
-                                <h3>Descrição</h3>
-                                <p>${this.produto.descricao}</p>
-                            </div>
-
-                            <div class="produto-especificacoes">
-                                <h3>Especificações</h3>
-                                <div class="especificacoes-grid">
-                                    ${this.renderizarEspecificacoes()}
-                                </div>
-                            </div>
-
-                            <div class="produto-actions">
-                                <div class="quantidade-selector">
-                                    <label for="quantidade">Quantidade:</label>
-                                    <div class="quantidade-control">
-                                        <button type="button" class="btn-quantidade" onclick="produtoDetalhe.alterarQuantidade(-1)">-</button>
-                                        <input type="number" id="quantidade" value="1" min="1" max="${this.produto.estoque}" 
-                                               onchange="produtoDetalhe.atualizarQuantidade(this.value)">
-                                        <button type="button" class="btn-quantidade" onclick="produtoDetalhe.alterarQuantidade(1)">+</button>
-                                    </div>
-                                </div>
-
-                                <div class="produto-buttons">
-                                    <button class="btn-primary btn-large" onclick="produtoDetalhe.adicionarAoCarrinho()">
-                                        <i class="fas fa-cart-plus"></i>
-                                        Adicionar ao Carrinho
-                                    </button>
-                                    <button class="btn-secondary btn-large" onclick="produtoDetalhe.comprarAgora()">
-                                        <i class="fas fa-bolt"></i>
-                                        Comprar Agora
-                                    </button>
-                                </div>
-
-                                <div class="produto-frete">
-                                    <i class="fas fa-truck"></i>
-                                    <span>Frete grátis para todo Brasil</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Abas de Informações -->
-                    <div class="produto-abas">
-                        <div class="abas-header">
-                            <button class="aba-btn active" onclick="produtoDetalhe.mudarAba('descricao')">Descrição</button>
-                            <button class="aba-btn" onclick="produtoDetalhe.mudarAba('especificacoes')">Especificações</button>
-                            <button class="aba-btn" onclick="produtoDetalhe.mudarAba('avaliacoes')">Avaliações</button>
-                            <button class="aba-btn" onclick="produtoDetalhe.mudarAba('garantia')">Garantia</button>
-                        </div>
-                        
-                        <div class="abas-content">
-                            <div id="aba-descricao" class="aba-content active">
-                                <h3>Sobre o Produto</h3>
-                                <p>${this.produto.descricao}</p>
-                                
-                                <h4>Principais Características</h4>
-                                <ul>
-                                    <li>Alta performance e eficiência energética</li>
-                                    <li>Tecnologia de ponta para máxima confiabilidade</li>
-                                    <li>Compatível com os mais recentes padrões do mercado</li>
-                                    <li>Excelente custo-benefício</li>
-                                </ul>
-                            </div>
-                            
-                            <div id="aba-especificacoes" class="aba-content">
-                                <h3>Especificações Técnicas</h3>
-                                <div class="especificacoes-detalhadas">
-                                    ${this.renderizarEspecificacoesDetalhadas()}
-                                </div>
-                            </div>
-                            
-                            <div id="aba-avaliacoes" class="aba-content">
-                                <h3>Avaliações dos Clientes</h3>
-                                <div class="avaliacoes-container">
-                                    ${this.renderizarAvaliacoes()}
-                                </div>
-                            </div>
-                            
-                            <div id="aba-garantia" class="aba-content">
-                                <h3>Garantia e Suporte</h3>
-                                <div class="garantia-info">
-                                    <div class="garantia-item">
-                                        <i class="fas fa-shield-alt"></i>
-                                        <div>
-                                            <h4>Garantia do Fabricante</h4>
-                                            <p>Este produto possui garantia de 12 meses contra defeitos de fabricação.</p>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="garantia-item">
-                                        <i class="fas fa-headset"></i>
-                                        <div>
-                                            <h4>Suporte Técnico</h4>
-                                            <p>Conte com nosso suporte técnico especializado para tirar todas as suas dúvidas.</p>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="garantia-item">
-                                        <i class="fas fa-undo"></i>
-                                        <div>
-                                            <h4>Política de Devolução</h4>
-                                            <p>Devolução fácil em até 7 dias. Veja nossos termos e condições.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-
-                // Adicionar thumbnails
-                this.adicionarThumbnails();
-            }
-
-            renderizarEspecificacoes() {
-                const especs = this.produto.especificacoes ? this.produto.especificacoes.split(',') : [];
-                return especs.map(esp => `
-                    <div class="especificacao-item">
-                        <i class="fas fa-check"></i>
-                        <span>${esp.trim()}</span>
-                    </div>
-                `).join('');
-            }
-
-            renderizarEspecificacoesDetalhadas() {
-                const especs = this.produto.especificacoes ? this.produto.especificacoes.split(',') : [];
-                return especs.map(esp => `
-                    <div class="especificacao-detalhada">
-                        <span class="espec-label">${esp.split(':')[0] || 'Especificação'}:</span>
-                        <span class="espec-valor">${esp.split(':')[1] || esp}</span>
-                    </div>
-                `).join('');
-            }
-
-            renderizarAvaliacoes() {
-                // Avaliações fictícias para demonstração
-                const avaliacoes = [
-                    { nome: 'João Silva', nota: 5, texto: 'Excelente produto! Superou minhas expectativas.', data: '2024-01-15' },
-                    { nome: 'Maria Santos', nota: 4, texto: 'Muito bom, recomendo!', data: '2024-01-10' },
-                    { nome: 'Pedro Oliveira', nota: 5, texto: 'Produto de alta qualidade.', data: '2024-01-05' }
-                ];
-
-                return avaliacoes.map(avaliacao => `
-                    <div class="avaliacao-item">
-                        <div class="avaliacao-header">
-                            <div class="avaliacao-usuario">
-                                <div class="usuario-avatar">${avaliacao.nome.charAt(0)}</div>
-                                <div class="usuario-info">
-                                    <span class="usuario-nome">${avaliacao.nome}</span>
-                                    <span class="avaliacao-data">${avaliacao.data}</span>
-                                </div>
-                            </div>
-                            <div class="avaliacao-estrelas">
-                                ${this.gerarEstrelas(avaliacao.nota)}
-                            </div>
-                        </div>
-                        <p class="avaliacao-texto">${avaliacao.texto}</p>
-                    </div>
-                `).join('');
-            }
-
-            adicionarThumbnails() {
-                const thumbsContainer = document.getElementById('thumbsContainer');
-                if (!thumbsContainer) return;
-
-                // Adicionar algumas thumbnails de exemplo
-                thumbsContainer.innerHTML = `
-                    <img src="${this.produto.imagem}" alt="${this.produto.nome}" class="thumb active">
-                    <img src="https://via.placeholder.com/100x100?text=Detalhe+1" alt="Detalhe 1" class="thumb">
-                    <img src="https://via.placeholder.com/100x100?text=Detalhe+2" alt="Detalhe 2" class="thumb">
-                    <img src="https://via.placeholder.com/100x100?text=Detalhe+3" alt="Detalhe 3" class="thumb">
-                `;
-
-                // Adicionar eventos de clique nas thumbnails
-                const thumbs = thumbsContainer.querySelectorAll('.thumb');
-                thumbs.forEach((thumb, index) => {
-                    thumb.addEventListener('click', () => {
-                        // Remover classe active de todas
-                        thumbs.forEach(t => t.classList.remove('active'));
-                        // Adicionar classe active na clicada
-                        thumb.classList.add('active');
-                        // Atualizar imagem principal (simplificado para demo)
-                        const imagemPrincipal = document.querySelector('.imagem-principal img');
-                        if (imagemPrincipal && index === 0) {
-                            imagemPrincipal.src = this.produto.imagem;
-                        }
-                    });
-                });
-            }
-
-            mudarAba(abaNome) {
-                // Remover active de todas as abas
-                document.querySelectorAll('.aba-btn').forEach(btn => btn.classList.remove('active'));
-                document.querySelectorAll('.aba-content').forEach(content => content.classList.remove('active'));
-
-                // Adicionar active na aba clicada
-                event.target.classList.add('active');
-                document.getElementById(`aba-${abaNome}`).classList.add('active');
-            }
-
-            alterarQuantidade(delta) {
-                const input = document.getElementById('quantidade');
-                const novaQuantidade = parseInt(input.value) + delta;
-                const max = parseInt(input.max);
-                const min = parseInt(input.min);
-
-                if (novaQuantidade >= min && novaQuantidade <= max) {
-                    input.value = novaQuantidade;
-                }
-            }
-
-            atualizarQuantidade(novaQuantidade) {
-                const input = document.getElementById('quantidade');
-                const max = parseInt(input.max);
-                const min = parseInt(input.min);
-
-                if (novaQuantidade > max) {
-                    alert(`Quantidade máxima disponível: ${max}`);
-                    input.value = max;
-                } else if (novaQuantidade < min) {
-                    input.value = min;
-                }
-            }
-
-            adicionarAoCarrinho() {
-                if (!this.produto) return;
-
-                const quantidade = parseInt(document.getElementById('quantidade').value);
-                
-                // Verificar estoque
-                if (quantidade > this.produto.estoque) {
-                    alert(`Quantidade máxima disponível: ${this.produto.estoque}`);
-                    return;
-                }
-
-                // Adicionar ao carrinho
-                for (let i = 0; i < quantidade; i++) {
-                    techHub.adicionarAoCarrinho(this.produto.id);
-                }
-            }
-
-            comprarAgora() {
-                this.adicionarAoCarrinho();
-                setTimeout(() => {
-                    window.location.href = 'checkout.html';
-                }, 1000);
-            }
-
-            buscarProdutoPadrao(produtoId) {
-                const produtos = techHub.getProdutosDefault();
-                return produtos.find(p => p.id === produtoId);
-            }
-
-            getProdutosRelacionadosPadrao() {
-                if (!this.produto) return [];
-                
-                const produtos = techHub.getProdutosDefault();
-                return produtos.filter(p => 
-                    p.categoria === this.produto.categoria && p.id !== this.produto.id
-                ).slice(0, 4);
-            }
-
-            renderizarProdutosRelacionados() {
-                const container = document.getElementById('produtosRelacionados');
-                if (!container || this.produtosRelacionados.length === 0) return;
-
-                container.innerHTML = this.produtosRelacionados.map(produto => `
-                    <div class="produto-card fade-in">
-                        <div class="produto-badge">${techHub.getBadgeProduto(produto)}</div>
-                        <img src="${produto.imagem}" alt="${produto.nome}" class="produto-imagem" 
-                             onerror="this.src='https://via.placeholder.com/300x200?text=Produto'">
-                        <div class="produto-info">
-                            <span class="produto-categoria">${produto.categoria}</span>
-                            <h3 class="produto-nome">${produto.nome}</h3>
-                            <p class="produto-desc">${produto.descricao}</p>
-                            <div class="produto-preco">
-                                R$ ${this.formatarPreco(produto.preco)}
-                                <span class="parcela">ou 10x de R$ ${this.formatarPreco(produto.preco / 10)}</span>
-                            </div>
-                            <div class="produto-actions">
-                                <a href="produto.html?id=${produto.id}" class="btn-secondary">
-                                    <i class="fas fa-eye"></i>
-                                </a>
-                                <button class="btn-primary" onclick="techHub.adicionarAoCarrinho('${produto.id}')">
-                                    <i class="fas fa-cart-plus"></i> Comprar
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                `).join('');
-            }
-
-            mostrarErro(mensagem) {
-                const container = document.getElementById('produtoContainer');
-                if (container) {
-                    container.innerHTML = `
-                        <div class="error-state">
-                            <i class="fas fa-exclamation-triangle"></i>
-                            <h3>${mensagem}</h3>
-                            <a href="produtos.html" class="btn-primary">Ver Todos os Produtos</a>
-                        </div>
-                    `;
-                }
-            }
-
-            getBadgeClass() {
-                if (!this.produto) return 'badge-success';
-                if (this.produto.estoque <= 5) return 'badge-danger';
-                if (this.produto.estoque <= 10) return 'badge-warning';
-                if (this.produto.preco > 2000) return 'badge-premium';
-                return 'badge-success';
-            }
-
-            getBadgeText() {
-                if (!this.produto) return 'Disponível';
-                if (this.produto.estoque <= 5) return 'Últimas!';
-                if (this.produto.estoque <= 10) return 'Acabando';
-                if (this.produto.preco > 2000) return 'Premium';
-                return 'Disponível';
-            }
-
-            gerarEstrelas(nota) {
-                let estrelas = '';
-                for (let i = 1; i <= 5; i++) {
-                    if (i <= Math.floor(nota)) {
-                        estrelas += '<i class="fas fa-star"></i>';
-                    } else if (i - 0.5 <= nota) {
-                        estrelas += '<i class="fas fa-star-half-alt"></i>';
-                    } else {
-                        estrelas += '<i class="far fa-star"></i>';
-                    }
-                }
-                return estrelas;
-            }
-
-            formatarPreco(preco) {
-                return new Intl.NumberFormat('pt-BR', {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2
-                }).format(preco);
-            }
-
-            atualizarCarrinhoFloat() {
-                if (window.techHub) {
-                    techHub.atualizarCarrinhoFloat();
-                }
-            }
-        }
-
-        
-        document.addEventListener('DOMContentLoaded', () => {
-            window.produtoDetalhe = new ProdutoDetalhe();
-        });
-    </script>
+    <script src="js/produto-detalhe.js"></script>
 </body>
+
 </html>
