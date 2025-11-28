@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const loginForm = document.getElementById('loginForm');
     const registerForm = document.getElementById('registerForm');
 
-    // Login form handler
+    
     if (loginForm) {
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const button = loginForm.querySelector('button');
             const originalText = button.textContent;
 
-            // Loading state
+           
             button.textContent = 'Entrando...';
             button.disabled = true;
 
@@ -28,13 +28,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 const data = await response.json();
 
                 if (data.success) {
-                    // Save user to localStorage
+                    
                     localStorage.setItem('techhub_user', JSON.stringify(data.user));
 
-                    // Show success message
+                    
                     mostrarNotificacao('Login realizado com sucesso!', 'success');
 
-                    // Redirect after delay
+                    
                     setTimeout(() => {
                         window.location.href = 'index.html';
                     }, 1500);
@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Register form handler
+    
     if (registerForm) {
         registerForm.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -64,13 +64,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const button = registerForm.querySelector('button');
             const originalText = button.textContent;
 
-            // Validate passwords match
+           
             if (senha !== confirmarSenha) {
                 mostrarNotificacao('As senhas não coincidem', 'error');
                 return;
             }
 
-            // Loading state
+           
             button.textContent = 'Cadastrando...';
             button.disabled = true;
 
@@ -86,12 +86,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 const data = await response.json();
 
                 if (data.success) {
-                    // Auto login after successful registration
+                    
                     localStorage.setItem('techhub_user', JSON.stringify(data.user));
 
                     mostrarNotificacao('Cadastro realizado com sucesso!', 'success');
 
-                    // Redirect after delay
+                    
                     setTimeout(() => {
                         window.location.href = 'index.html';
                     }, 1500);
@@ -110,7 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// Tab switching function
+
 function switchTab(tab) {
     const loginForm = document.getElementById('loginForm');
     const registerForm = document.getElementById('registerForm');
@@ -140,7 +140,7 @@ function mostrarNotificacao(mensagem, tipo = 'success') {
 
     document.body.appendChild(toast);
 
-    // Ensure styles exist (if not loaded from style.css yet)
+    
     if (!document.querySelector('style[data-toast]')) {
         const style = document.createElement('style');
         style.textContent = `

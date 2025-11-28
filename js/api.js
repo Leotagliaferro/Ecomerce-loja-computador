@@ -1,8 +1,8 @@
-// API Module - Centralized API calls for TechHub
+
 const API = {
     baseURL: '/backend',
 
-    // Helper method for fetch requests
+   
     async request(endpoint, options = {}) {
         const config = {
             headers: {
@@ -27,7 +27,7 @@ const API = {
         }
     },
 
-    // User Authentication
+   
     async login(email, senha) {
         return this.request('login.php', {
             method: 'POST',
@@ -42,7 +42,7 @@ const API = {
         });
     },
 
-    // Products
+    
     async listarProdutos(filtros = {}) {
         const params = new URLSearchParams();
 
@@ -61,7 +61,7 @@ const API = {
         return this.request(`produto.php?id=${id}`, { method: 'GET' });
     },
 
-    // Admin - Save Product
+   
     async salvarProduto(produto) {
         return this.request('salvarProduto.php', {
             method: 'POST',
@@ -69,7 +69,7 @@ const API = {
         });
     },
 
-    // Orders
+   
     async processarPedido(pedido) {
         return this.request('processar_pedido.php', {
             method: 'POST',
@@ -78,7 +78,7 @@ const API = {
     }
 };
 
-// Export for use in other modules
+
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = API;
 }

@@ -1,4 +1,4 @@
-// Admin Panel Logic
+
 class AdminPanel {
     constructor() {
         this.form = document.getElementById('produtoForm');
@@ -26,7 +26,7 @@ class AdminPanel {
         const descricao = document.getElementById('descricao').value;
 
         const novoProduto = {
-            id: 'custom_' + Date.now(), // Unique ID for custom products
+            id: 'custom_' + Date.now(), 
             nome,
             preco,
             categoria,
@@ -38,14 +38,14 @@ class AdminPanel {
             modelo: 'Edition'
         };
 
-        // Get existing custom products
+     
         const produtos = this.getProdutosCustomizados();
         produtos.push(novoProduto);
 
-        // Save to localStorage
+       
         localStorage.setItem('techhub_custom_products', JSON.stringify(produtos));
 
-        // Feedback
+       
         techHub.mostrarNotificacao('Produto adicionado com sucesso!');
         this.form.reset();
         this.renderizarTabela();
@@ -101,7 +101,7 @@ class AdminPanel {
     }
 }
 
-// Initialize
+
 let adminPanel;
 document.addEventListener('DOMContentLoaded', () => {
     adminPanel = new AdminPanel();

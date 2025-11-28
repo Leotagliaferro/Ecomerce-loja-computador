@@ -18,15 +18,11 @@ if (!$data) {
     exit;
 }
 
-// In a real application, you would save the order to the database here.
-// For now, we'll just simulate a successful order.
-
-// Simulate processing delay
 sleep(1);
 
 echo json_encode([
     "success" => true,
     "message" => "Pedido realizado com sucesso!",
-    "id" => rand(1000, 9999) // Mock Order ID
+    "id" => rand(1000, 9999) 
 ]);
 ?>

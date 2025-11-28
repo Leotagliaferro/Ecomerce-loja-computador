@@ -6,11 +6,11 @@ class ProdutosManager {
     }
 
     init() {
-        // Wait for TechHub to be ready or load independently
+        
         if (window.techHub) {
             this.carregarProdutos();
         } else {
-            // Fallback if techHub isn't ready yet
+            
             setTimeout(() => this.init(), 100);
         }
         this.configurarEventListeners();
@@ -33,8 +33,7 @@ class ProdutosManager {
         if (loading) loading.style.display = 'block';
 
         try {
-            // Use TechHub's centralized product loading which handles backend + custom products
-            // We ensure we get the latest list
+            
             await window.techHub.carregarProdutos();
             this.produtos = window.techHub.produtos;
 
@@ -165,10 +164,8 @@ class ProdutosManager {
     }
 
     preencherFiltroCategorias() {
-        // Delegated to TechHub or handled here if needed specific logic
-        // But TechHub already fills the main filter. 
-        // If this page has a specific filter ID that TechHub doesn't target, we can do it here.
-        // TechHub targets 'categoriaFilter', so we might be good.
+        
+   
     }
 
     getBadgeClass(produto) {

@@ -1,6 +1,6 @@
 <?php
-// CONFIGURAÇÕES DE ERRO
-ini_set('display_errors', 0); // não mostra HTML de erro
+
+ini_set('display_errors', 0); 
 ini_set('display_startup_errors', 0);
 error_reporting(E_ALL);
 
@@ -10,7 +10,7 @@ header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 
-// CAPTURA ERROS FATAIS
+
 register_shutdown_function(function() {
     $err = error_get_last();
     if ($err) {
@@ -22,7 +22,7 @@ register_shutdown_function(function() {
     }
 });
 
-// CAPTURA ERROS E WARNINGS
+
 set_error_handler(function($severity, $message, $file, $line) {
     throw new ErrorException($message, 0, $severity, $file, $line);
 });
@@ -38,7 +38,7 @@ try {
         throw new Exception("Falha na conexão com o DB: " . $conn->connect_error);
     }
 
-    // PEGAR DADOS DO POST
+   
     $nome = $_POST["nome"] ?? '';
     $descricao = $_POST["descricao"] ?? '';
     $preco = floatval($_POST["preco"] ?? 0);
@@ -59,7 +59,7 @@ try {
         $imagem = $filename;
     }
 
-    // PREPARAR STATEMENT
+   
     $stmt = $conn->prepare("
         INSERT INTO produtos 
         (nome, descricao, preco, categoria, imagem, estoque, marca, modelo) 
@@ -69,7 +69,7 @@ try {
 
     $stmt->bind_param("ssdssiss", $nome, $descricao, $preco, $categoria, $imagem, $estoque, $marca, $modelo);
 
-    // EXECUTAR
+    
     if ($stmt->execute()) {
         echo json_encode([
             "sucesso" => true,

@@ -1,4 +1,4 @@
-/* Navigation Links Styles */
+
 .nav-links {
     display: flex;
     align-items: center;
@@ -43,7 +43,7 @@
     width: 100%;
 }
 
-/* Login Button Styles */
+
 .login-btn {
     background: var(--gradient-primary) !important;
     color: white !important;

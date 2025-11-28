@@ -12,7 +12,7 @@ class Carrinho {
     }
 
     configurarEventListeners() {
-        // Botão de limpar carrinho
+        
         const limparCarrinhoBtn = document.getElementById('limparCarrinho');
         if (limparCarrinhoBtn) {
             limparCarrinhoBtn.addEventListener('click', () => {
@@ -22,7 +22,7 @@ class Carrinho {
             });
         }
 
-        // Botão de finalizar compra
+        
         const finalizarCompraBtn = document.getElementById('finalizarCompra');
         if (finalizarCompraBtn) {
             finalizarCompraBtn.addEventListener('click', () => {
@@ -133,15 +133,15 @@ class Carrinho {
         
         switch (regiao) {
             case '0':
-            case '1': // São Paulo e regiões próximas
+            case '1': 
                 return { valor: 15.90, tipo: 'Expresso', prazo: 1 };
             case '2':
-            case '3': // Rio de Janeiro e regiões próximas
+            case '3': 
                 return { valor: 19.90, tipo: 'Expresso', prazo: 2 };
             case '4':
-            case '5': // Regiões Norte/Nordeste
+            case '5': 
                 return { valor: 29.90, tipo: 'Standard', prazo: 5 };
-            default: // Outras regiões
+            default: 
                 return { valor: 39.90, tipo: 'Standard', prazo: 7 };
         }
     }

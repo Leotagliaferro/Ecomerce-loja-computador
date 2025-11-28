@@ -7,7 +7,7 @@ class ProdutoDetalhe {
     }
 
     init() {
-        // Wait for TechHub
+        
         if (window.techHub) {
             this.carregarProduto();
         } else {
@@ -17,8 +17,7 @@ class ProdutoDetalhe {
     }
 
     configurarEventListeners() {
-        // Event listeners specific to product page are handled here
-        // Global ones like cart float are in app.js
+       
     }
 
     async carregarProduto() {
@@ -34,8 +33,7 @@ class ProdutoDetalhe {
         if (loading) loading.style.display = 'flex';
 
         try {
-            // Use TechHub to find the product (it handles backend + custom)
-            // We might need to ensure TechHub has loaded products first
+            
             if (techHub.produtos.length === 0) {
                 await techHub.carregarProdutos();
             }
@@ -59,7 +57,7 @@ class ProdutoDetalhe {
     async carregarProdutosRelacionados() {
         if (!this.produto) return;
 
-        // Filter related products from TechHub's list
+        
         this.produtosRelacionados = techHub.produtos.filter(p =>
             p.categoria === this.produto.categoria && p.id != this.produto.id
         ).slice(0, 4);
@@ -73,10 +71,9 @@ class ProdutoDetalhe {
         const container = document.getElementById('produtoContainer');
         const breadcrumb = document.getElementById('breadcrumbProduto');
 
-        // Update breadcrumb if exists
+        
         if (breadcrumb) breadcrumb.textContent = this.produto.nome;
 
-        // Ensure price is a number
         const preco = parseFloat(this.produto.preco);
 
         container.innerHTML = `
@@ -195,8 +192,7 @@ class ProdutoDetalhe {
     }
 
     renderizarEspecificacoes() {
-        // If specs are a string, split them. If object, iterate.
-        // For now assuming simple string or comma separated
+        
         const specs = this.produto.especificacoes || 'Marca: ' + (this.produto.marca || 'TechHub') + ', Modelo: ' + (this.produto.modelo || 'Standard');
         const specList = specs.split(',').map(s => s.trim());
 
@@ -212,7 +208,7 @@ class ProdutoDetalhe {
         const thumbsContainer = document.getElementById('thumbsContainer');
         if (!thumbsContainer) return;
 
-        // Add main image + placeholders
+        
         thumbsContainer.innerHTML = `
             <img src="${this.produto.imagem}" class="thumb active" onclick="produtoDetalhe.mudarImagem(this.src, this)">
             <img src="https://via.placeholder.com/500x500?text=Vista+2" class="thumb" onclick="produtoDetalhe.mudarImagem(this.src, this)">
@@ -230,7 +226,6 @@ class ProdutoDetalhe {
         document.querySelectorAll('.aba-btn').forEach(btn => btn.classList.remove('active'));
         document.querySelectorAll('.aba-content').forEach(content => content.classList.remove('active'));
 
-        // Find button that triggered this (event.target might be unreliable if called programmatically, but ok here)
         const buttons = document.querySelectorAll('.aba-btn');
         buttons.forEach(b => {
             if (b.textContent.toLowerCase().includes(abaNome)) b.classList.add('active');

@@ -961,7 +961,7 @@ body {
     margin-bottom: 1rem;
 }
 
-/* Auth Pages */
+
 .auth-container {
     min-height: 100vh;
     display: flex;
@@ -1094,7 +1094,7 @@ body {
     width: 100%;
 }
 
-/* Fix for Cart Images */
+
 .cart-item-imagem {
     width: 100px;
     height: 100px;
@@ -1109,7 +1109,7 @@ body {
     object-fit: cover;
 }
 
-/* Responsive */
+
 @media (max-width: 768px) {
     .hero-content {
         grid-template-columns: 1fr;

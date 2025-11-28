@@ -1,4 +1,4 @@
-// Sistema de E-commerce TechHub
+
 class TechHub {
     constructor() {
         this.apiBase = 'backend';
@@ -21,14 +21,14 @@ class TechHub {
         const navActions = document.querySelector('.nav-actions');
 
         if (user && navActions) {
-            // Remove existing login button if any
+         
             const existingBtn = navActions.querySelector('.login-btn');
             if (existingBtn) existingBtn.remove();
 
-            // Check if user menu already exists to avoid duplication
+            
             if (navActions.querySelector('.user-menu')) return;
 
-            // Add user menu
+           
             const userMenu = document.createElement('div');
             userMenu.className = 'user-menu';
             userMenu.innerHTML = `
@@ -56,11 +56,11 @@ class TechHub {
                 </div>
             `;
 
-            // Insert before cart icon
+            
             const cartIcon = navActions.querySelector('.cart-icon');
             navActions.insertBefore(userMenu, cartIcon);
         } else if (navActions) {
-            // Add login button if not logged in
+            
             if (!navActions.querySelector('.login-btn') && !navActions.querySelector('.user-menu')) {
                 const loginBtn = document.createElement('a');
                 loginBtn.href = 'login.html';
@@ -87,7 +87,7 @@ class TechHub {
     }
 
     configurarEventListeners() {
-        // Carrinho flutuante
+        
         const cartIcon = document.getElementById('cartIcon');
         const cartFloat = document.getElementById('cartFloat');
         const closeCart = document.getElementById('closeCart');
@@ -105,7 +105,7 @@ class TechHub {
             });
         }
 
-        // Menu mobile
+       
         const mobileMenuToggle = document.getElementById('mobileMenuToggle');
         const navMenu = document.querySelector('.nav-menu');
 
@@ -115,7 +115,7 @@ class TechHub {
             });
         }
 
-        // Newsletter
+       
         const newsletterForm = document.getElementById('newsletterForm');
         if (newsletterForm) {
             newsletterForm.addEventListener('submit', (e) => {
@@ -124,7 +124,7 @@ class TechHub {
             });
         }
 
-        // Close user dropdown when clicking outside
+       
         document.addEventListener('click', (e) => {
             const userMenu = document.querySelector('.user-menu');
             const dropdown = document.getElementById('userDropdown');
@@ -150,29 +150,25 @@ class TechHub {
     }
 
     async carregarProdutos() {
-        // This method is mainly for the homepage/app-wide data
-        // Specific pages might load their own products (like produtos.js)
-        // But we keep a reference here
+      
         try {
             const response = await fetch(`${this.apiBase}/listar_produtos.php`);
             const data = await response.json();
             let produtosBackend = (data.data && !data.erro) ? data.data : [];
 
-            // Merge with custom products from localStorage (Admin Panel)
+            
             const produtosCustom = this.getProdutosCustomizados();
 
-            // If backend is empty/failed, use defaults
+            
             if (produtosBackend.length === 0) {
                 produtosBackend = this.getProdutosDefault();
             }
 
             this.produtos = [...produtosCustom, ...produtosBackend];
 
-            // Only render if we are on a page with the grid
+           
             if (document.getElementById('produtosGrid')) {
-                // Let produtos.js handle rendering if it exists, otherwise do it here
-                // But usually produtos.js handles the main grid. 
-                // We'll leave this empty to avoid conflict, or check if produtosManager exists
+                
                 if (!window.produtosManager) {
                     this.renderizarProdutos();
                 }
@@ -203,20 +199,18 @@ class TechHub {
     }
 
     renderizarProdutos(produtos = this.produtos) {
-        // Simple renderer for index.html 'Featured' section if needed
-        // Usually produtos.js handles the main catalog
+       
         const container = document.getElementById('produtosGrid');
         if (!container) return;
 
-        // Implementation similar to produtos.js but simplified
-        // ... (Logic delegated to produtos.js for now to avoid duplication)
+       
     }
 
     preencherFiltroCategorias() {
         const select = document.getElementById('categoriaFilter');
         if (!select) return;
 
-        // Check if options already exist to avoid duplicates
+        
         if (select.options.length > 1) return;
 
         select.innerHTML = '<option value="">Todas as Categorias</option>' +
@@ -226,9 +220,9 @@ class TechHub {
     }
 
     filtrarPorCategoria(categoria) {
-        // Redirect to products page with filter
+       
         window.location.href = `index.html#produtos`;
-        // Small delay to allow scroll then filter
+        
         setTimeout(() => {
             const select = document.getElementById('categoriaFilter');
             if (select) {
@@ -238,12 +232,12 @@ class TechHub {
         }, 500);
     }
 
-    // Sistema de Carrinho Centralizado
+    
     adicionarAoCarrinho(produtoId) {
-        // Find product in loaded list or defaults
+        
         let produto = this.produtos.find(p => p.id == produtoId);
 
-        // If not found in current list, check defaults/customs explicitly
+        
         if (!produto) {
             const allProducts = [...this.getProdutosCustomizados(), ...this.getProdutosDefault()];
             produto = allProducts.find(p => p.id == produtoId);
@@ -403,7 +397,7 @@ class TechHub {
 
         document.body.appendChild(toast);
 
-        // Ensure styles exist
+        
         if (!document.querySelector('style[data-toast]')) {
             const style = document.createElement('style');
             style.textContent = `

@@ -130,7 +130,7 @@ class ComponentsManager {
     }
 
     initHeaderEvents() {
-        // Mobile Menu
+        
         const mobileMenuToggle = document.getElementById('mobileMenuToggle');
         const navLinks = document.getElementById('navLinks');
 
@@ -140,7 +140,7 @@ class ComponentsManager {
             });
         }
 
-        // User Dropdown
+       
         const userIcon = document.getElementById('userIcon');
         const userDropdown = document.getElementById('userDropdown');
 
@@ -155,7 +155,7 @@ class ComponentsManager {
             });
         }
 
-        // Logout
+       
         const logoutBtn = document.getElementById('logoutBtn');
         if (logoutBtn) {
             logoutBtn.addEventListener('click', (e) => {
@@ -164,7 +164,7 @@ class ComponentsManager {
             });
         }
 
-        // Atualizar contador do carrinho se existir
+        
         this.updateCartCount();
     }
 
@@ -176,7 +176,7 @@ class ComponentsManager {
         if (user && loginLink && userMenu) {
             loginLink.style.display = 'none';
             userMenu.style.display = 'block';
-            // Adicionar nome do usuário se quiser
+            
         }
     }
 
