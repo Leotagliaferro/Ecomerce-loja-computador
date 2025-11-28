@@ -23,10 +23,10 @@ class ComponentsManager {
                         TechHub
                     </a>
                     <div class="nav-links" id="navLinks">
-                        <a href="index.html">Início</a>
-                        <a href="produtos.html">Produtos</a>
-                        <a href="carrinho.html">Carrinho</a>
-                        <a href="contato.html">Contato</a>
+                        <a href="index.html" class="nav-link">Início</a>
+                        <a href="produtos.html" class="nav-link">Produtos</a>
+                        <a href="carrinho.html" class="nav-link">Carrinho</a>
+                        <a href="contato.html" class="nav-link">Contato</a>
                     </div>
                     <div class="nav-icons">
                         <div class="search-icon">
@@ -35,7 +35,7 @@ class ComponentsManager {
                         <div class="user-icon" id="userIcon">
                             <i class="fas fa-user"></i>
                             <div class="user-dropdown" id="userDropdown">
-                                <a href="login.html" id="loginLink">Entrar / Cadastrar</a>
+                                <a href="login.html" id="loginLink" class="login-btn">Entrar / Cadastrar</a>
                                 <div id="userMenu" style="display: none;">
                                     <a href="perfil.html">Meu Perfil</a>
                                     <a href="#" id="logoutBtn">Sair</a>
@@ -120,7 +120,7 @@ class ComponentsManager {
 
     highlightActiveMenu() {
         const currentPath = window.location.pathname.split('/').pop() || 'index.html';
-        const links = document.querySelectorAll('.nav-links a');
+        const links = document.querySelectorAll('.nav-link');
 
         links.forEach(link => {
             if (link.getAttribute('href') === currentPath) {

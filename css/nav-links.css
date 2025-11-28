@@ -1,0 +1,67 @@
+/* Navigation Links Styles */
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.nav-link {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.95rem;
+    padding: 0.5rem 0;
+    position: relative;
+    transition: var(--transition);
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--gradient-primary);
+    transition: var(--transition);
+}
+
+.nav-link:hover {
+    color: var(--primary-color);
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+
+.nav-link.active {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.nav-link.active::after {
+    width: 100%;
+}
+
+/* Login Button Styles */
+.login-btn {
+    background: var(--gradient-primary) !important;
+    color: white !important;
+    padding: 0.65rem 1.5rem !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+    transition: var(--transition) !important;
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3) !important;
+    text-decoration: none !important;
+    display: inline-block !important;
+}
+
+.login-btn::after {
+    display: none !important;
+}
+
+.login-btn:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.5) !important;
+    color: white !important;
+}
