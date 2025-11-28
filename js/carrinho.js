@@ -108,7 +108,6 @@ class Carrinho {
     }
 
     calcularDesconto(cupom = '') {
-        // Sistema simples de cupons
         const cupons = {
             'TECHHUB10': 0.10, // 10% de desconto
             'PRIMEIRACOMPRA': 0.15, // 15% para primeira compra
