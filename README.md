@@ -1,210 +1,95 @@
-# 🖥️ TechHub - E-commerce de Peças de Computador
+# 🚀 TechHub E-commerce System
 
-## 📋 Visão Geral
+Bem-vindo ao **TechHub**, um sistema de e-commerce completo desenvolvido com PHP, MySQL e JavaScript. Este documento fornece todas as orientações necessárias para configurar, rodar e modificar o sistema.
 
-TechHub é um sistema completo de e-commerce desenvolvido especialmente para venda de peças de computador e hardware. O sistema oferece uma experiência moderna e intuitiva com design responsivo, suporte multi-idioma (português), e funcionalidades avançadas de gerenciamento.
+## 📋 Pré-requisitos
 
-## 🎯 Objetivos
+Para rodar este projeto, você precisará de um ambiente de servidor local. Recomendamos o **XAMPP**:
 
-- Facilitar a compra de peças de computador online
-- Oferecer uma interface moderna e intuitiva
-- Gerenciar produtos, pedidos e clientes eficientemente
-- Proporcionar uma experiência de compra completa e segura
-- Monitorar vendas e estoque em tempo real
+*   **XAMPP** (com Apache e MySQL) - [Download aqui](https://www.apachefriends.org/pt_br/index.html)
 
-## ✨ Principais Funcionalidades
+## ⚙️ Instalação e Configuração
 
-### 🛍️ Loja Virtual
-- **Catálogo de Produtos**: Visualização completa com filtros por categoria, marca e preço
-- **Carrinho de Compras**: Sistema completo com gestão de quantidades e cálculo de frete
-- **Checkout**: Processo completo com validação de dados e múltiplas formas de pagamento
-- **Busca Avançada**: Pesquisa por produtos com filtros dinâmicos
-- **Design Responsivo**: Interface adaptável para desktop, tablet e mobile
-- **Tema Escuro**: Interface moderna com tema escuro profissional
+Siga os passos abaixo para colocar o sistema no ar:
 
-### 📊 Painel Administrativo
-- **Dashboard Completo**: Visualização de vendas, estatísticas e gráficos interativos
-- **Gerenciamento de Produtos**: CRUD completo com controle de estoque
-- **Gestão de Pedidos**: Acompanhamento completo do ciclo de vendas
-- **Controle de Clientes**: Gerenciamento de informações e histórico de compras
-- **Análises e Relatórios**: Gráficos de vendas, categorias e performance
-- **Controle de Estoque**: Alertas de baixo estoque e gestão de inventário
+1.  **Clone ou Baixe o Projeto**
+    *   Coloque a pasta do projeto (ex: `ecomerce`) dentro do diretório `htdocs` do seu XAMPP (geralmente em `C:\xampp\htdocs\`).
 
-### 💳 Formas de Pagamento
-- **Cartão de Crédito**: Parcelamento em até 10x sem juros
-- **Boleto Bancário**: Com desconto de 5%
-- **PIX**: Com desconto de 10%
+2.  **Inicie os Serviços**
+    *   Abra o **XAMPP Control Panel**.
+    *   Inicie os módulos **Apache** e **MySQL** (clique em "Start").
 
-### 🚚 Frete e Entrega
-- **Cálculo por Região**: Sistema inteligente baseado em CEP
-- **Frete Grátis**: Para determinadas regiões
-- **Prazos de Entrega**: Estimativas precisas por região
+3.  **Configuração do Banco de Dados**
+    *   O sistema possui um script de configuração automática.
+    *   Acesse no seu navegador: `http://localhost/ecomerce/setup_database.php`
+    *   Se tudo der certo, você verá uma mensagem de sucesso e as tabelas serão criadas automaticamente.
 
-## 📁 Estrutura do Projeto
-
-```
-TechHub/
-├── index.html              # Página principal da loja
-├── produto.html            # Página individual de produto
-├── carrinho.html           # Página do carrinho de compras
-├── checkout.html           # Página de checkout/pagamento
-├── css/
-│   ├── style.css          # Estilos principais do site
-├── js/
-│   ├── app.js             # JavaScript principal da loja
-│   ├── carrinho.js        # Sistema de carrinho de compras
-│   ├── produtos.js        # Gerenciamento de produtos
-│   └── admin.js           # JavaScript do painel administrativo
-└── README.md              # Documentação do projeto
-```
-
-## 🗂️ Banco de Dados
-
-### Tabelas Principais
-
-#### 🔧 Produtos
-- **Campos**: id, nome, descrição, categoria, marca, preço, estoque, imagem_url, especificações, status
-- **Categorias**: processors, graphics, memory, storage, motherboard, power_supply, cooling, cases
-- **Marcas**: Intel, AMD, NVIDIA, Kingston, Corsair, Samsung, WD, Gigabyte, ASUS, MSI, Cooler Master, Seasonic
-
-#### 📦 Pedidos
-- **Campos**: id, cliente_nome, cliente_email, endereco_entrega, itens, valor_total, metodo_pagamento, status
-- **Status**: pending, processing, shipped, delivered, cancelled
-- **Pagamento**: credit_card, boleto, pix, debit_card
-
-#### 👥 Clientes
-- **Campos**: id, nome, email, telefone, cpf, endereco, status, total_gasto, numero_pedidos
+    > **Nota:** O script tentará conectar ao MySQL com usuário `root` e senha vazia (padrão do XAMPP). Se sua configuração for diferente, edite o arquivo `backend/db.php` e `setup_database.php`.
 
 ## 🚀 Como Usar
 
-### 📦 Instalação e Configuração
-
-#### 1. Pré-requisitos
-- **XAMPP**: Certifique-se de ter o XAMPP instalado.
-- **Pasta do Projeto**: Este projeto deve estar na pasta `htdocs` do XAMPP (ex: `C:\xampp\htdocs\ecomerce`).
-
-#### 2. Configuração do Banco de Dados
-1. Abra o **XAMPP Control Panel** e inicie os módulos **Apache** e **MySQL**.
-2. Acesse [http://localhost/phpmyadmin](http://localhost/phpmyadmin) no seu navegador.
-3. Crie um novo banco de dados chamado `ecommerce`.
-4. Clique na aba **Importar**, selecione o arquivo `setup.sql` localizado na raiz do projeto e clique em **Executar**.
-   - Isso criará a tabela de usuários necessária para o login.
-
-#### 3. Executando o Projeto
-1. Com o Apache e MySQL rodando, acesse:
-   - **[http://localhost/ecomerce](http://localhost/ecomerce)**
-
-#### 4. Credenciais de Teste
-- **Email**: `teste@techhub.com`
-- **Senha**: `123456`
-
-### 🌐 Acesso às Páginas
-
-#### Loja Virtual
-- **Home**: `index.html`
-- **Produto Individual**: `produto.html?id={id_produto}`
-- **Carrinho**: `carrinho.html`
-- **Checkout**: `checkout.html`
-
-#### Painel Administrativo
-- **Dashboard**: `admin.html` (seção padrão)
-- **Produtos**: `admin.html` → seção Produtos
-- **Pedidos**: `admin.html` → seção Pedidos
-- **Clientes**: `admin.html` → seção Clientes
-- **Estoque**: `admin.html` → seção Estoque
-
-### 🔐 Acesso Admin
-- **Usuário**: Administrador
-- **Função**: Gerente
-- **Acesso**: Direto pela página admin.html
-
-## 🎨 Design e Interface
-
-### Paleta de Cores
-- **Primária**: #2563eb (Azul)
-- **Secundária**: #64748b (Cinza)
-- **Sucesso**: #10b981 (Verde)
-- **Aviso**: #f59e0b (Laranja)
-- **Perigo**: #ef4444 (Vermelho)
-- **Fundo Escuro**: #0f172a
-- **Fundo Card**: #1e293b
-
-### Tipografia
-- **Fonte Principal**: Inter (Google Fonts)
-- **Ícones**: Font Awesome 6.4.0
-
-## 📊 Funcionalidades Avançadas
-
-### 🛒 Carrinho de Compras
-- Adicionar/remover produtos
-- Alterar quantidades
-- Aplicar cupons de desconto
-- Cálculo automático de frete
-- Sistema de favoritos
-
-### 💰 Sistema de Descontos
-- Cupons promocionais
-- Descontos por método de pagamento
-- Frete grátis por região
-
-### 📈 Dashboard Administrativo
-- Vendas totais e por período
-- Gráficos de vendas por mês
-- Análise de categorias mais vendidas
-- Controle de estoque com alertas
-- Gestão de status de pedidos
-
-### 🔍 Filtros e Busca
-- Filtros por categoria
-- Filtros por marca
-- Filtros por faixa de preço
-- Busca por nome e descrição
-- Ordenação por relevância/preço
-
-## 📱 Responsividade
-
-### Desktop (1200px+)
-- Layout completo com sidebar
-- Todas as funcionalidades disponíveis
-- Dashboard com gráficos completos
-
-### Tablet (768px - 1199px)
-- Layout adaptado com menu hambúrguer
-- Cards reorganizados
-- Tabelas com scroll horizontal
-
-### Mobile (até 767px)
-- Interface otimizada para toque
-- Menu lateral em drawer
-- Formulários em coluna única
-- Botões ampliados para fácil acesso
-
-## 🛠️ Tecnologias Utilizadas
-
-### Frontend
-- **HTML5**: Estrutura semântica
-- **CSS3**: Estilos modernos com variáveis
-- **JavaScript ES6+**: Funcionalidades interativas
-- **Chart.js**: Gráficos e visualizações
-- **Font Awesome**: Ícones vetoriais
-
-### APIs e Serviços
-- **RESTful API**: Comunicação com banco de dados
-- **LocalStorage**: Armazenamento local do carrinho
-- **ViaCEP**: Consulta de endereços por CEP
-
-## 🔧 Configurações e Personalização
-
-### Cores e Temas
-Edite as variáveis CSS em `css/style.css`:
-```css
-:root {
-    --primary-color: #2563eb;
-    --dark-bg: #0f172a;
-    --dark-card: #1e293b;
-}
-```
+Após a configuração, acesse a página inicial:
+👉 `http://localhost/ecomerce/index.html`
 
 
+### Contas de Teste
+O sistema já vem com usuários pré-configurados para teste:
+
+*   **Administrador:**
+    *   Email: `admin@techhub.com`
+    *   Senha: `password`
+*   **Usuário Comum:**
+    *   Email: `teste@techhub.com`
+    *   Senha: `123456`
+
+## 🔗 Links Rápidos
+Aqui estão os links diretos para as principais páginas do sistema:
+
+*   **🏠 Home**: [http://localhost/ecomerce/index.html](http://localhost/ecomerce/index.html)
+*   **🛍️ Produtos**: [http://localhost/ecomerce/produtos.html](http://localhost/ecomerce/produtos.html)
+*   **🛒 Carrinho**: [http://localhost/ecomerce/carrinho.html](http://localhost/ecomerce/carrinho.html)
+*   **💳 Checkout**: [http://localhost/ecomerce/checkout.html](http://localhost/ecomerce/checkout.html)
+*   **👤 Login**: [http://localhost/ecomerce/login.html](http://localhost/ecomerce/login.html)
+*   **⚙️ Admin**: [http://localhost/ecomerce/admin.html](http://localhost/ecomerce/admin.html)
+*   **📞 Contato**: [http://localhost/ecomerce/contato.html](http://localhost/ecomerce/contato.html)
+*   **ℹ️ Sobre**: [http://localhost/ecomerce/sobre.html](http://localhost/ecomerce/sobre.html)
+*   **🛠️ Setup Banco**: [http://localhost/ecomerce/setup_database.php](http://localhost/ecomerce/setup_database.php)
 
 
+## 📂 Estrutura do Projeto
+
+Para ajudar você a "mexer" no sistema, aqui está o mapa dos arquivos principais:
+
+### 🎨 Frontend (Interface)
+*   **`index.html`**: Página inicial com vitrine de produtos.
+*   **`login.html` / `registro.php`**: Páginas de autenticação.
+*   **`carrinho.html`**: Visualização do carrinho de compras.
+*   **`css/`**: Contém os arquivos de estilo (CSS).
+*   **`js/`**: Scripts JavaScript.
+    *   `app.js`: Lógica principal (carrinho, renderização, eventos).
+    *   `api.js`: Centraliza todas as chamadas para o backend (fetch).
+
+### 🧠 Backend (Lógica e Dados)
+Os arquivos PHP ficam na pasta `backend/` e na raiz (alguns legados):
+
+*   **`backend/db.php`**: Arquivo de conexão com o banco de dados. **Mexa aqui se precisar mudar a senha do banco.**
+*   **`backend/listar_produtos.php`**: API que retorna os produtos do banco (JSON).
+*   **`backend/login.php`**: Processa o login do usuário.
+*   **`backend/processar_pedido.php`**: Recebe o pedido finalizado.
+*   **`setup.sql`**: Arquivo SQL com a estrutura do banco e dados iniciais.
+
+## 🛠️ Dicas para Desenvolvimento
+
+1.  **Adicionar Novos Produtos:**
+    *   Você pode inserir diretamente no banco de dados (tabela `produtos`) ou usar a interface de admin (se implementada).
+    *   Alternativamente, edite o arquivo `setup.sql` e rode o `setup_database.php` novamente (cuidado, isso pode resetar o banco!).
+
+2.  **Alterar o Layout:**
+    *   Edite os arquivos na pasta `css/`. O sistema usa variáveis CSS para cores, facilitando a troca de temas.
+
+3.  **Depuração:**
+    *   Se algo não funcionar, abra o **Console do Desenvolvedor** (F12) no navegador para ver erros de JavaScript.
+    *   Verifique a aba **Network** (Rede) para ver se as requisições para os arquivos `.php` estão retornando 200 OK.
+
+---
+*Desenvolvido para fins educacionais e de teste.*
